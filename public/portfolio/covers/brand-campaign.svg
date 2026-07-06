@@ -1,0 +1,19 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F7F7F4"/>
+  <g stroke="#050505" stroke-width="4" stroke-linecap="square">
+    <path d="M126 126V450"/>
+    <path d="M126 450H476"/>
+    <path d="M476 266V792"/>
+    <path d="M342 356H1020"/>
+    <path d="M1020 356V506"/>
+    <path d="M712 492V722"/>
+    <path d="M526 628H978"/>
+    <path d="M894 30V238"/>
+  </g>
+  <rect x="250" y="500" width="640" height="220" fill="#F7F7F4" opacity="0.94"/>
+  <g font-family="Inter, Arial, 'PingFang SC', sans-serif" fill="#050505">
+    <text x="280" y="550" font-size="28" font-weight="400">Brand / Campaign</text>
+    <text x="280" y="618" font-size="56" font-weight="800">品牌传播物料</text>
+    <text x="280" y="676" font-size="27" font-weight="500">活动视觉 · 社媒图文 · 品牌延展</text>
+  </g>
+</svg>

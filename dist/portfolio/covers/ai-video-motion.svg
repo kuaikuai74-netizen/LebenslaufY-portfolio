@@ -1,0 +1,20 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F7F7F4"/>
+  <g stroke="#050505" stroke-width="4" stroke-linecap="square">
+    <path d="M210 170H636"/>
+    <path d="M636 170V778"/>
+    <path d="M88 506H410"/>
+    <path d="M410 506V832"/>
+    <path d="M518 374H1004"/>
+    <path d="M1004 374V542"/>
+    <path d="M746 480V704"/>
+    <path d="M620 634H1038"/>
+    <path d="M890 40V246"/>
+  </g>
+  <rect x="270" y="498" width="640" height="220" fill="#F7F7F4" opacity="0.94"/>
+  <g font-family="Inter, Arial, 'PingFang SC', sans-serif" fill="#050505">
+    <text x="300" y="548" font-size="28" font-weight="400">AI Video / Motion</text>
+    <text x="300" y="616" font-size="54" font-weight="800">AI 视频与动态视觉</text>
+    <text x="300" y="674" font-size="27" font-weight="500">分镜 · 运动 · 氛围短片</text>
+  </g>
+</svg>

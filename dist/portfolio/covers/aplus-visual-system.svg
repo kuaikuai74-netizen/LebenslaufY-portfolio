@@ -1,0 +1,19 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F7F7F4"/>
+  <g stroke="#050505" stroke-width="4" stroke-linecap="square">
+    <path d="M166 74V438"/>
+    <path d="M166 438H640"/>
+    <path d="M640 206V780"/>
+    <path d="M392 258H936"/>
+    <path d="M936 258V468"/>
+    <path d="M778 462V650"/>
+    <path d="M536 674H1034"/>
+    <path d="M1012 76V248"/>
+  </g>
+  <rect x="312" y="482" width="666" height="220" fill="#F7F7F4" opacity="0.94"/>
+  <g font-family="Inter, Arial, 'PingFang SC', sans-serif" fill="#050505">
+    <text x="342" y="532" font-size="28" font-weight="400">A+ Page / Layout</text>
+    <text x="342" y="600" font-size="52" font-weight="800">A+ 详情页视觉系统</text>
+    <text x="342" y="658" font-size="27" font-weight="500">信息层级 · 模块化 · 购买理由</text>
+  </g>
+</svg>
