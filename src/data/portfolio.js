@@ -1,3 +1,6 @@
+import { aplusLongImages } from './aplusLongImages.js';
+import { productMainImages } from './productMainImages.js';
+
 export const navItems = [
   { label: '概况', href: '#top' },
   { label: '作品', href: '#works' },
@@ -67,93 +70,7 @@ export const works = [
         '将产品尺寸、材质、功能与生活方式叙事结合，提升用户对场景适配度和购买理由的感知。',
         '输出可复用的主图视觉规范，方便后续系列产品延展和团队协作。',
       ],
-      images: [
-        {
-          src: '/portfolio/dresser-main/main-01.jpg',
-          alt: '梳妆台产品主图 1',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/main-02.jpg',
-          alt: '梳妆台产品主图 2',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/main-03.jpg',
-          alt: '梳妆台产品主图 3',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/main-04.jpg',
-          alt: '梳妆台产品主图 4',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/main-05.jpg',
-          alt: '梳妆台产品主图 5',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/main-06.jpg',
-          alt: '梳妆台产品主图 6',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/main-07.jpg',
-          alt: '梳妆台产品主图 7',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/main-08.jpg',
-          alt: '梳妆台产品主图 8',
-          aspect: 'square',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-01.jpg',
-          alt: '梳妆台详情视觉 1',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-02.jpg',
-          alt: '梳妆台详情视觉 2',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-03.jpg',
-          alt: '梳妆台详情视觉 3',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-04.jpg',
-          alt: '梳妆台详情视觉 4',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-05.jpg',
-          alt: '梳妆台详情视觉 5',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-06.jpg',
-          alt: '梳妆台详情视觉 6',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-07.jpg',
-          alt: '梳妆台详情视觉 7',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-08.jpg',
-          alt: '梳妆台详情视觉 8',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/dresser-main/detail-09.jpg',
-          alt: '梳妆台详情视觉 9',
-          aspect: 'wide',
-        },
-      ],
+      images: productMainImages,
     },
   },
   {
@@ -175,23 +92,7 @@ export const works = [
         '通过统一的版式节奏、色彩和图文规范，让不同 SKU 能快速延展成系列化页面。',
         '结合 AI 图像生成与后期修图，提高场景图补充和页面视觉迭代效率。',
       ],
-      images: [
-        {
-          src: '/portfolio/dresser-aplus.jpg',
-          alt: '梳妆台 A+ 详情页视觉',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/gaming-chair-aplus.png',
-          alt: '电竞椅 A+ 详情页视觉',
-          aspect: 'wide',
-        },
-        {
-          src: '/portfolio/workbench-aplus.png',
-          alt: '工作台 A+ 详情页视觉',
-          aspect: 'wide',
-        },
-      ],
+      images: aplusLongImages,
     },
   },
   {
@@ -312,6 +213,28 @@ export const services = [
   '工作经历',
   '教育经历',
 ];
+
+export const resumeProfile = {
+  title: '个人简历',
+  subtitle: 'AI VISUAL DESIGNER / CROSS-BORDER E-COMMERCE',
+  sections: [
+    {
+      label: '视觉设计与团队管理',
+      body:
+        '6 年视觉设计深耕经验，2年跨境电商视觉团队管理经验，兼具实操能力与统筹管理思维精通 PS、Al 设计软件，熟练运用 AIGC 提效赋能，运用API节点调用各大国内外模型 (Nano Banana 2/ Image 2.0/Veo 3.1/Seedance 2.0Kling3.0）进行逻辑与长文本梳理以及生图，深谙欧美审美及海外本土化视觉逻辑',
+    },
+    {
+      label: '商业审美与转化落地',
+      body:
+        '具备扎实美术功底与商业审美，擅长融合视觉美学与营销诉求，兼顾品牌调性与业务转化拥有策略思维与强落地能力，善用 Al 优化工作流程，提升团队整体创作效率与产出质量',
+    },
+    {
+      label: '设计业务与管理核心',
+      body:
+        '懂设计＋懂业务 ＋能落地〝——带领团队输出符合品牌调性的视觉作品，又能站在业务视角判断设计的实际价值，同时通过流程和规范确保方案高效落地，这也是我理解的视觉管理岗位需要的核心能力。',
+    },
+  ],
+};
 
 export const servicesSection = {
   eyebrow: 'Services',

@@ -35,6 +35,29 @@ function WorkCover({ work, index }) {
   return <PlaceholderArtwork index={index} />;
 }
 
+function getPreviewClassName(aspect) {
+  const aspectClassNames = {
+    tall: 'aspect-[3/4]',
+    wide: 'aspect-[2.44/1]',
+    square: 'aspect-square',
+  };
+
+  return `w-full object-cover transition duration-500 group-hover:scale-[1.03] ${
+    aspectClassNames[aspect] ?? aspectClassNames.square
+  }`;
+}
+
+function getLightboxMediaClassName(aspect) {
+  const baseClassName =
+    'rounded-[1rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)] sm:rounded-[1.5rem]';
+
+  if (aspect === 'tall') {
+    return `${baseClassName} w-full max-w-[min(100%,56rem)]`;
+  }
+
+  return `${baseClassName} max-h-[calc(92vh-6rem)] w-auto max-w-full sm:max-h-[calc(92vh-7rem)]`;
+}
+
 function CaseStudyOverlay({ caseStudy, onClose }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const lightboxImage =
@@ -63,7 +86,9 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
       <div className="mx-auto flex min-h-full max-w-7xl flex-col overflow-hidden rounded-[1.25rem] border border-white/40 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.32)] sm:rounded-[2rem] lg:grid lg:h-full lg:grid-cols-[1.22fr_0.78fr]">
         <div className="relative order-1 flex min-h-0 flex-col bg-white/82 p-5 sm:p-10 lg:order-2 lg:p-12">
           <button
-            className="fixed right-5 top-5 z-[95] grid h-11 w-11 place-items-center rounded-full border border-line bg-paper text-2xl font-light text-sage shadow-card transition hover:bg-ink hover:text-white sm:absolute sm:right-6 sm:top-6 sm:h-12 sm:w-12"
+            className={`fixed right-5 top-5 z-[85] h-11 w-11 place-items-center rounded-full border border-line bg-paper text-2xl font-light text-sage shadow-card transition hover:bg-ink hover:text-white sm:absolute sm:right-6 sm:top-6 sm:h-12 sm:w-12 ${
+              lightboxImage ? 'hidden' : 'grid'
+            }`}
             type="button"
             onClick={onClose}
             aria-label="关闭案例详情"
@@ -101,10 +126,10 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
         <div className="order-2 flex min-h-0 flex-col border-t border-line lg:order-1 lg:border-r lg:border-t-0">
           <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
-            <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {caseStudy.images.map((image, index) => (
                 <button
-                  className="group mb-4 block w-full break-inside-avoid overflow-hidden rounded-[1.25rem] border border-line bg-white text-left shadow-card"
+                  className="group block w-full overflow-hidden rounded-[1.25rem] border border-line bg-white text-left shadow-card"
                   key={image.src}
                   type="button"
                   onClick={() => setLightboxIndex(index)}
@@ -112,9 +137,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                 >
                   {image.type === 'video' ? (
                     <video
-                      className={`w-full object-cover transition duration-500 group-hover:scale-[1.03] ${
-                        image.aspect === 'wide' ? 'aspect-[2.44/1]' : 'aspect-square'
-                      }`}
+                      className={getPreviewClassName(image.aspect)}
                       muted
                       playsInline
                       preload="metadata"
@@ -123,9 +146,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   ) : (
                     <img
                       alt={image.alt}
-                      className={`w-full object-cover transition duration-500 group-hover:scale-[1.03] ${
-                        image.aspect === 'wide' ? 'aspect-[2.44/1]' : 'aspect-square'
-                      }`}
+                      className={getPreviewClassName(image.aspect)}
                       src={image.src}
                     />
                   )}
@@ -185,26 +206,28 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
               ))}
             </div>
 
-            <div className="relative min-h-0 overflow-auto bg-white/55 p-3 sm:p-8">
-              <div className="sticky left-0 top-0 z-10 mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-sage sm:mb-4 sm:tracking-[0.28em]">
-                Image Preview
-              </div>
-              <div className="grid min-h-full place-items-center">
-                {isLightboxVideo ? (
-                  <video
-                    aria-label={lightboxImage.alt}
-                    className="max-h-[calc(92vh-6rem)] w-auto max-w-full rounded-[1rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)] sm:max-h-[calc(92vh-7rem)] sm:rounded-[1.5rem]"
-                    controls
-                    playsInline
-                    src={lightboxImage.src}
-                  />
-                ) : (
-                  <img
-                    alt={lightboxImage.alt}
-                    className="max-h-[calc(92vh-6rem)] w-auto max-w-full rounded-[1rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)] sm:max-h-[calc(92vh-7rem)] sm:rounded-[1.5rem]"
-                    src={lightboxImage.src}
-                  />
-                )}
+            <div className="relative min-h-0 bg-white/55">
+              <div className="h-full overflow-auto p-3 sm:p-8">
+                <div className="sticky left-0 top-0 z-10 mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-sage sm:mb-4 sm:tracking-[0.28em]">
+                  Image Preview
+                </div>
+                <div className="grid min-h-full place-items-center">
+                  {isLightboxVideo ? (
+                    <video
+                      aria-label={lightboxImage.alt}
+                      className={getLightboxMediaClassName(lightboxImage.aspect)}
+                      controls
+                      playsInline
+                      src={lightboxImage.src}
+                    />
+                  ) : (
+                    <img
+                      alt={lightboxImage.alt}
+                      className={getLightboxMediaClassName(lightboxImage.aspect)}
+                      src={lightboxImage.src}
+                    />
+                  )}
+                </div>
               </div>
 
               <button
