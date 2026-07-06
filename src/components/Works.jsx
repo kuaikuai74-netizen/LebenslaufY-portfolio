@@ -60,8 +60,46 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
       aria-modal="true"
       aria-labelledby="case-study-title"
     >
-      <div className="mx-auto grid min-h-full max-w-7xl overflow-hidden rounded-[1.25rem] border border-white/40 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.32)] sm:rounded-[2rem] lg:h-full lg:grid-cols-[1.22fr_0.78fr]">
-        <div className="flex min-h-0 flex-col border-line lg:border-r">
+      <div className="mx-auto flex min-h-full max-w-7xl flex-col overflow-hidden rounded-[1.25rem] border border-white/40 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.32)] sm:rounded-[2rem] lg:grid lg:h-full lg:grid-cols-[1.22fr_0.78fr]">
+        <div className="relative order-1 flex min-h-0 flex-col bg-white/82 p-5 sm:p-10 lg:order-2 lg:p-12">
+          <button
+            className="fixed right-5 top-5 z-[95] grid h-11 w-11 place-items-center rounded-full border border-line bg-paper text-2xl font-light text-sage shadow-card transition hover:bg-ink hover:text-white sm:absolute sm:right-6 sm:top-6 sm:h-12 sm:w-12"
+            type="button"
+            onClick={onClose}
+            aria-label="关闭案例详情"
+          >
+            ×
+          </button>
+
+          <div className="pr-12 sm:pr-14">
+            <div className="mb-6 inline-grid h-10 w-10 place-items-center rounded-2xl bg-mist text-sm font-semibold text-moss sm:mb-10 sm:h-12 sm:w-12 sm:text-lg">
+              01
+            </div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss sm:tracking-[0.34em]">
+              {caseStudy.eyebrow}
+            </p>
+            <h3 id="case-study-title" className="mt-4 text-3xl font-light text-ink sm:mt-5 sm:text-5xl">
+              {caseStudy.title}
+            </h3>
+            <p className="mt-5 border-l border-moss/50 pl-4 text-sm leading-7 text-sage sm:mt-8 sm:pl-6 sm:text-base sm:leading-8">
+              {caseStudy.summary}
+            </p>
+          </div>
+
+          <div className="mt-7 grid gap-3 sm:mt-10 sm:gap-4">
+            {caseStudy.details.map((detail) => (
+              <p className="border-t border-line pt-3 text-sm leading-7 text-sage sm:pt-4" key={detail}>
+                {detail}
+              </p>
+            ))}
+          </div>
+
+          <div className="mt-8 border-t border-line pt-5 text-xs font-semibold uppercase tracking-[0.24em] text-sage sm:tracking-[0.28em] lg:mt-auto lg:pt-8">
+            Scroll images
+          </div>
+        </div>
+
+        <div className="order-2 flex min-h-0 flex-col border-t border-line lg:order-1 lg:border-r lg:border-t-0">
           <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
             <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
               {caseStudy.images.map((image, index) => (
@@ -96,48 +134,10 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
             </div>
           </div>
         </div>
-
-        <div className="relative flex min-h-0 flex-col bg-white/82 p-5 sm:p-10 lg:p-12">
-          <button
-            className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full border border-line bg-paper text-2xl font-light text-sage transition hover:bg-ink hover:text-white sm:right-6 sm:top-6 sm:h-12 sm:w-12"
-            type="button"
-            onClick={onClose}
-            aria-label="关闭案例详情"
-          >
-            ×
-          </button>
-
-          <div className="pr-14">
-            <div className="mb-7 inline-grid h-11 w-11 place-items-center rounded-2xl bg-mist text-base font-semibold text-moss sm:mb-10 sm:h-12 sm:w-12 sm:text-lg">
-              01
-            </div>
-            <p className="text-xs font-semibold uppercase tracking-[0.34em] text-moss">
-              {caseStudy.eyebrow}
-            </p>
-            <h3 id="case-study-title" className="mt-5 text-3xl font-light text-ink sm:text-5xl">
-              {caseStudy.title}
-            </h3>
-            <p className="mt-6 border-l border-moss/50 pl-5 text-sm leading-7 text-sage sm:mt-8 sm:pl-6 sm:text-base sm:leading-8">
-              {caseStudy.summary}
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 sm:mt-10">
-            {caseStudy.details.map((detail) => (
-              <p className="border-t border-line pt-4 text-sm leading-7 text-sage" key={detail}>
-                {detail}
-              </p>
-            ))}
-          </div>
-
-          <div className="mt-auto hidden border-t border-line pt-8 text-xs font-semibold uppercase tracking-[0.28em] text-sage lg:block">
-            Close case study
-          </div>
-        </div>
       </div>
 
       {lightboxImage && (
-        <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/82 p-4 backdrop-blur-xl">
+        <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/82 p-3 backdrop-blur-xl sm:p-4">
           <button
             className="absolute inset-0 cursor-zoom-out"
             type="button"
@@ -185,15 +185,15 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
               ))}
             </div>
 
-            <div className="relative min-h-0 overflow-auto bg-white/55 p-4 sm:p-8">
-              <div className="sticky left-0 top-0 z-10 mb-4 hidden text-xs font-semibold uppercase tracking-[0.28em] text-sage sm:block">
+            <div className="relative min-h-0 overflow-auto bg-white/55 p-3 sm:p-8">
+              <div className="sticky left-0 top-0 z-10 mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-sage sm:mb-4 sm:tracking-[0.28em]">
                 Image Preview
               </div>
               <div className="grid min-h-full place-items-center">
                 {isLightboxVideo ? (
                   <video
                     aria-label={lightboxImage.alt}
-                    className="max-h-[calc(92vh-7rem)] w-auto max-w-full rounded-[1.5rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)]"
+                    className="max-h-[calc(92vh-6rem)] w-auto max-w-full rounded-[1rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)] sm:max-h-[calc(92vh-7rem)] sm:rounded-[1.5rem]"
                     controls
                     playsInline
                     src={lightboxImage.src}
@@ -201,14 +201,14 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                 ) : (
                   <img
                     alt={lightboxImage.alt}
-                    className="max-h-[calc(92vh-7rem)] w-auto max-w-full rounded-[1.5rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)]"
+                    className="max-h-[calc(92vh-6rem)] w-auto max-w-full rounded-[1rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)] sm:max-h-[calc(92vh-7rem)] sm:rounded-[1.5rem]"
                     src={lightboxImage.src}
                   />
                 )}
               </div>
 
               <button
-                className="absolute left-4 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-white/86 text-2xl text-ink shadow-card transition hover:bg-ink hover:text-white sm:left-8 sm:h-12 sm:w-12"
+                className="absolute bottom-4 left-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-line bg-white/86 text-2xl text-ink shadow-card transition hover:bg-ink hover:text-white sm:bottom-auto sm:left-8 sm:top-1/2 sm:h-12 sm:w-12 sm:-translate-y-1/2"
                 type="button"
                 onClick={showPreviousImage}
                 aria-label="查看上一张原图"
@@ -216,7 +216,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                 ←
               </button>
               <button
-                className="absolute right-4 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-white/86 text-2xl text-ink shadow-card transition hover:bg-ink hover:text-white sm:right-8 sm:h-12 sm:w-12"
+                className="absolute bottom-4 right-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-line bg-white/86 text-2xl text-ink shadow-card transition hover:bg-ink hover:text-white sm:bottom-auto sm:right-8 sm:top-1/2 sm:h-12 sm:w-12 sm:-translate-y-1/2"
                 type="button"
                 onClick={showNextImage}
                 aria-label="查看下一张原图"
