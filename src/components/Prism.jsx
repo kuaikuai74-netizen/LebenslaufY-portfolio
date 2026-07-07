@@ -11,6 +11,8 @@ export default function Prism({
   noise = 0.5,
   transparent = true,
   scale = 3.6,
+  maxDpr = 1.25,
+  maxFps = 30,
   hueShift = 0,
   colorFrequency = 1,
   hoverStrength = 2,
@@ -27,7 +29,7 @@ export default function Prism({
 
     const H = Math.max(0.001, height);
     const baseHalf = Math.max(0.001, baseWidth) * 0.5;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const dpr = Math.min(maxDpr, window.devicePixelRatio || 1);
     const renderer = new Renderer({ dpr, alpha: transparent, antialias: false });
     const gl = renderer.gl;
 
@@ -132,7 +134,7 @@ export default function Prism({
           wob = mat2(c0, c1, c2, c0);
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 56; i++) {
           p = vec3(f, z);
           p.xz = p.xz * wob;
           p = uRot * p;
@@ -232,10 +234,12 @@ export default function Prism({
     let roll = 0;
     let targetYaw = 0;
     let targetPitch = 0;
+    let lastRenderTime = 0;
     const pointer = { x: 0, y: 0, inside: true };
     const hoverEase = Math.max(0, Math.min(1, inertia || 0.12));
     const hoverPower = Math.max(0, hoverStrength || 1);
     const timeMultiplier = Math.max(0, timeScale || 1);
+    const frameInterval = maxFps > 0 ? 1000 / maxFps : 0;
 
     const lerp = (a, b, t) => a + (b - a) * t;
     const onMove = (event) => {
@@ -256,6 +260,12 @@ export default function Prism({
     }
 
     const render = (time) => {
+      if (frameInterval && lastRenderTime && time - lastRenderTime < frameInterval) {
+        frame = requestAnimationFrame(render);
+        return;
+      }
+      lastRenderTime = time;
+
       const elapsed = (time - startTime) * 0.001;
       program.uniforms.iTime.value = elapsed;
 
@@ -315,6 +325,8 @@ export default function Prism({
     offset?.y,
     scale,
     transparent,
+    maxDpr,
+    maxFps,
     hueShift,
     colorFrequency,
     timeScale,

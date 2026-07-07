@@ -3,9 +3,11 @@ import { navItems, profile } from '../data/portfolio';
 
 export default function Navbar() {
   const [activeHref, setActiveHref] = useState('#top');
-  const [scrollProgress, setScrollProgress] = useState(0);
   const lockedHrefRef = useRef(null);
   const lockTimeoutRef = useRef(null);
+  const progressRef = useRef(null);
+  const frameRef = useRef(0);
+  const activeHrefRef = useRef('#top');
 
   useEffect(() => {
     const updateNavigationState = () => {
@@ -13,15 +15,20 @@ export default function Navbar() {
         document.documentElement.scrollHeight - window.innerHeight;
       const progress =
         scrollableHeight <= 0 ? 0 : (window.scrollY / scrollableHeight) * 100;
-
-      setScrollProgress(Math.min(100, Math.max(0, progress)));
+      const clampedProgress = Math.min(100, Math.max(0, progress));
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${clampedProgress / 100})`;
+      }
 
       if (lockedHrefRef.current) {
         const targetSection = document.querySelector(lockedHrefRef.current);
         const targetTop = targetSection?.getBoundingClientRect().top ?? 0;
 
         if (targetTop > 16 || targetTop < -160) {
-          setActiveHref(lockedHrefRef.current);
+          if (activeHrefRef.current !== lockedHrefRef.current) {
+            activeHrefRef.current = lockedHrefRef.current;
+            setActiveHref(lockedHrefRef.current);
+          }
           return;
         }
 
@@ -44,22 +51,38 @@ export default function Navbar() {
           .filter((item) => item.top <= 140)
           .sort((a, b) => b.top - a.top)[0] ?? sectionPositions[0];
 
-      setActiveHref(currentItem?.href ?? '#top');
+      const nextHref = currentItem?.href ?? '#top';
+      if (activeHrefRef.current !== nextHref) {
+        activeHrefRef.current = nextHref;
+        setActiveHref(nextHref);
+      }
+    };
+    const scheduleNavigationUpdate = () => {
+      if (frameRef.current) {
+        return;
+      }
+
+      frameRef.current = window.requestAnimationFrame(() => {
+        frameRef.current = 0;
+        updateNavigationState();
+      });
     };
 
     updateNavigationState();
-    window.addEventListener('scroll', updateNavigationState, { passive: true });
-    window.addEventListener('resize', updateNavigationState);
+    window.addEventListener('scroll', scheduleNavigationUpdate, { passive: true });
+    window.addEventListener('resize', scheduleNavigationUpdate);
 
     return () => {
       window.clearTimeout(lockTimeoutRef.current);
-      window.removeEventListener('scroll', updateNavigationState);
-      window.removeEventListener('resize', updateNavigationState);
+      window.cancelAnimationFrame(frameRef.current);
+      window.removeEventListener('scroll', scheduleNavigationUpdate);
+      window.removeEventListener('resize', scheduleNavigationUpdate);
     };
   }, []);
 
   const handleNavigationClick = (href) => {
     lockedHrefRef.current = href;
+    activeHrefRef.current = href;
     setActiveHref(href);
     window.clearTimeout(lockTimeoutRef.current);
     lockTimeoutRef.current = window.setTimeout(() => {
@@ -68,10 +91,11 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper/88 shadow-[0_12px_44px_rgba(31,41,40,0.045)] backdrop-blur-2xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper/96 shadow-[0_10px_30px_rgba(31,41,40,0.04)]">
       <div
+        ref={progressRef}
         className="absolute inset-x-0 bottom-0 h-px origin-left bg-ink/70 transition-transform duration-300"
-        style={{ transform: `scaleX(${scrollProgress / 100})` }}
+        style={{ transform: 'scaleX(0)' }}
         aria-hidden="true"
       />
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:px-10">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SectionHeader from './SectionHeader';
 import { works } from '../data/portfolio';
 
@@ -48,21 +48,23 @@ function getPreviewClassName(aspect) {
 }
 
 function getLightboxMediaClassName(aspect) {
-  const baseClassName =
-    'rounded-[1rem] border border-line bg-white object-contain shadow-[0_26px_90px_rgba(31,41,40,0.18)] sm:rounded-[1.5rem]';
+  const baseClassName = 'bg-white object-contain';
 
   if (aspect === 'tall') {
-    return `${baseClassName} w-full max-w-[min(100%,56rem)]`;
+    return `${baseClassName} w-full max-w-[min(100%,54rem)]`;
   }
 
-  return `${baseClassName} max-h-[calc(92vh-6rem)] w-auto max-w-full sm:max-h-[calc(92vh-7rem)]`;
+  return `${baseClassName} max-h-[calc(92vh-4rem)] w-auto max-w-full sm:max-h-[calc(92vh-5rem)]`;
 }
 
 function CaseStudyOverlay({ caseStudy, onClose }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const lightboxScrollRef = useRef(null);
   const lightboxImage =
     lightboxIndex === null ? null : caseStudy.images[lightboxIndex];
   const isLightboxVideo = lightboxImage?.type === 'video';
+  const lightboxMediaSrc = lightboxImage?.displaySrc ?? lightboxImage?.src;
+  const caseNumber = String(caseStudy.caseNumber ?? 1).padStart(2, '0');
   const showPreviousImage = () => {
     setLightboxIndex((currentIndex) =>
       currentIndex === null
@@ -75,6 +77,50 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
       currentIndex === null ? currentIndex : (currentIndex + 1) % caseStudy.images.length,
     );
   };
+
+  useEffect(() => {
+    lightboxScrollRef.current?.scrollTo({ top: 0, left: 0 });
+  }, [lightboxIndex]);
+
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (lightboxIndex === null) {
+          onClose();
+        } else {
+          setLightboxIndex(null);
+        }
+      }
+
+      if (lightboxIndex === null) {
+        return;
+      }
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        showPreviousImage();
+      }
+
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        showNextImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, onClose]);
 
   return (
     <div
@@ -98,7 +144,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
           <div className="pr-12 sm:pr-14">
             <div className="mb-6 inline-grid h-10 w-10 place-items-center rounded-2xl bg-mist text-sm font-semibold text-moss sm:mb-10 sm:h-12 sm:w-12 sm:text-lg">
-              01
+              {caseNumber}
             </div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss sm:tracking-[0.34em]">
               {caseStudy.eyebrow}
@@ -110,6 +156,19 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
               {caseStudy.summary}
             </p>
           </div>
+
+          {caseStudy.meta && (
+            <dl className="mt-6 grid gap-3 border-y border-line py-4 sm:mt-8 sm:grid-cols-3 sm:py-5">
+              {caseStudy.meta.map((item) => (
+                <div key={item.label}>
+                  <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-moss">
+                    {item.label}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-6 text-ink">{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
 
           <div className="mt-7 grid gap-3 sm:mt-10 sm:gap-4">
             {caseStudy.details.map((detail) => (
@@ -147,7 +206,9 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                     <img
                       alt={image.alt}
                       className={getPreviewClassName(image.aspect)}
-                      src={image.src}
+                      decoding="async"
+                      loading="lazy"
+                      src={image.previewSrc ?? image.src}
                     />
                   )}
                 </button>
@@ -158,16 +219,16 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
       </div>
 
       {lightboxImage && (
-        <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/82 p-3 backdrop-blur-xl sm:p-4">
+        <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/78 p-3 sm:p-4">
           <button
             className="absolute inset-0 cursor-zoom-out"
             type="button"
             onClick={() => setLightboxIndex(null)}
             aria-label="关闭原图预览"
           />
-          <div className="pointer-events-none absolute inset-0 opacity-30 placeholder-grid" />
+          <div className="pointer-events-none absolute inset-0 opacity-12 placeholder-grid" />
 
-          <div className="relative z-10 grid h-[92vh] w-full max-w-7xl overflow-hidden rounded-[1.25rem] border border-white/35 bg-paper shadow-[0_40px_140px_rgba(0,0,0,0.48)] sm:rounded-[2rem] md:grid-cols-[4.5rem_1fr_16rem] xl:grid-cols-[5rem_1fr_21rem]">
+          <div className="relative z-10 grid h-[92vh] w-full max-w-7xl overflow-hidden border border-white/35 bg-paper md:grid-cols-[4.5rem_1fr_16rem] xl:grid-cols-[5rem_1fr_21rem]">
             <button
               className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full border border-line bg-white/88 text-2xl font-light text-ink shadow-card transition hover:bg-ink hover:text-white sm:right-5 sm:top-5 sm:h-12 sm:w-12"
               type="button"
@@ -177,7 +238,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
               ×
             </button>
 
-            <div className="hidden border-r border-line bg-white/72 p-3 md:flex md:flex-col md:gap-3 md:overflow-y-auto">
+            <div className="hidden border-r border-line bg-white p-3 md:flex md:flex-col md:gap-3 md:overflow-y-auto">
               {caseStudy.images.map((image, index) => (
                 <button
                   className={`aspect-square overflow-hidden rounded-2xl border bg-white transition ${
@@ -200,31 +261,36 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                       src={image.src}
                     />
                   ) : (
-                    <img alt="" className="h-full w-full object-cover" src={image.src} />
+                    <img
+                      alt=""
+                      className="h-full w-full object-cover"
+                      decoding="async"
+                      loading="lazy"
+                      src={image.previewSrc ?? image.src}
+                    />
                   )}
                 </button>
               ))}
             </div>
 
-            <div className="relative min-h-0 bg-white/55">
-              <div className="h-full overflow-auto p-3 sm:p-8">
-                <div className="sticky left-0 top-0 z-10 mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-sage sm:mb-4 sm:tracking-[0.28em]">
-                  Image Preview
-                </div>
-                <div className="grid min-h-full place-items-center">
+            <div className="relative min-h-0 bg-white">
+              <div ref={lightboxScrollRef} className="h-full overflow-auto overscroll-contain p-3 sm:p-5">
+                <div className="grid min-h-full place-items-start justify-center">
                   {isLightboxVideo ? (
                     <video
                       aria-label={lightboxImage.alt}
                       className={getLightboxMediaClassName(lightboxImage.aspect)}
                       controls
                       playsInline
-                      src={lightboxImage.src}
+                      src={lightboxMediaSrc}
                     />
                   ) : (
                     <img
                       alt={lightboxImage.alt}
                       className={getLightboxMediaClassName(lightboxImage.aspect)}
-                      src={lightboxImage.src}
+                      decoding="async"
+                      loading="eager"
+                      src={lightboxMediaSrc}
                     />
                   )}
                 </div>
@@ -248,7 +314,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
               </button>
             </div>
 
-            <aside className="hidden border-l border-line bg-white/86 p-6 md:flex md:flex-col xl:p-8">
+            <aside className="hidden border-l border-line bg-white p-6 md:flex md:flex-col xl:p-8">
               <p className="text-xs font-semibold uppercase tracking-[0.34em] text-moss">
                 {caseStudy.eyebrow}
               </p>
@@ -256,7 +322,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                 {lightboxImage.alt}
               </h4>
               <p className="mt-7 border-l border-moss/50 pl-5 text-sm leading-7 text-sage">
-                点击缩略图可以快速切换图片，也可以使用左右箭头浏览完整主图与详情页视觉。
+                点击缩略图可以快速切换图片，也可以使用左右箭头或键盘方向键浏览完整主图与详情页视觉。
               </p>
               <div className="mt-8 grid grid-cols-2 gap-3 text-sm">
                 <div className="border border-line bg-paper/70 p-4">
@@ -318,7 +384,10 @@ export default function Works() {
             <button
               className="block w-full text-left"
               type="button"
-              onClick={() => work.caseStudy && setActiveCase(work.caseStudy)}
+              onClick={() =>
+                work.caseStudy &&
+                setActiveCase({ ...work.caseStudy, caseNumber: index + 1 })
+              }
               disabled={!work.caseStudy}
             >
               <WorkCover work={work} index={index} />
@@ -333,7 +402,7 @@ export default function Works() {
                 <button
                   className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink transition hover:text-moss"
                   type="button"
-                  onClick={() => setActiveCase(work.caseStudy)}
+                  onClick={() => setActiveCase({ ...work.caseStudy, caseNumber: index + 1 })}
                 >
                   查看案例详情
                   <span aria-hidden="true">→</span>
