@@ -63,7 +63,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
   const lightboxImage =
     lightboxIndex === null ? null : caseStudy.images[lightboxIndex];
   const isLightboxVideo = lightboxImage?.type === 'video';
-  const lightboxMediaSrc = lightboxImage?.displaySrc ?? lightboxImage?.src;
+  const lightboxMediaSrc = lightboxImage?.src;
   const caseNumber = String(caseStudy.caseNumber ?? 1).padStart(2, '0');
   const showPreviousImage = () => {
     setLightboxIndex((currentIndex) =>
@@ -208,7 +208,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                       className={getPreviewClassName(image.aspect)}
                       decoding="async"
                       loading="lazy"
-                      src={image.previewSrc ?? image.src}
+                      src={image.src}
                     />
                   )}
                 </button>

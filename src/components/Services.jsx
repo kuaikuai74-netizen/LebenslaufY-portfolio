@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import SectionHeader from './SectionHeader';
-import { resumeProfile, services, servicesSection } from '../data/portfolio';
+import { serviceProfiles, services, servicesSection } from '../data/portfolio';
 
-function ResumeOverlay({ onClose }) {
+function ServiceProfileOverlay({ profile, onClose }) {
   return (
     <div
       className="fixed inset-0 z-[90] overflow-y-auto bg-ink/58 px-4 py-6 backdrop-blur-md sm:px-6 sm:py-10"
@@ -28,17 +28,17 @@ function ResumeOverlay({ onClose }) {
             Personal Profile
           </p>
           <h2 id="resume-title" className="mt-4 text-4xl font-light leading-tight text-ink sm:text-5xl">
-            {resumeProfile.title}
+            {profile.title}
           </h2>
           <p className="mt-5 max-w-xs text-xs font-semibold uppercase leading-6 tracking-[0.22em] text-sage">
-            {resumeProfile.subtitle}
+            {profile.subtitle}
           </p>
           <div className="mt-8 h-px w-20 bg-sage/35" />
         </aside>
 
         <div className="relative flex min-h-0 flex-col p-7 pt-16 sm:p-9 sm:pt-20 lg:p-10 lg:pt-16">
           <div className="space-y-6">
-            {resumeProfile.sections.map((section) => (
+            {profile.sections.map((section) => (
               <section className="border-t border-line pt-5" key={section.label}>
                 <div className="flex items-center gap-3">
                   <span className="h-2 w-2 rounded-full bg-moss" aria-hidden="true" />
@@ -46,7 +46,7 @@ function ResumeOverlay({ onClose }) {
                     {section.label}
                   </h3>
                 </div>
-                <p className="mt-4 text-sm leading-8 text-sage sm:text-base sm:leading-8">
+                <p className="mt-4 whitespace-pre-line text-sm leading-8 text-sage sm:text-base sm:leading-8">
                   {section.body}
                 </p>
               </section>
@@ -68,7 +68,7 @@ function ResumeOverlay({ onClose }) {
 }
 
 export default function Services() {
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [activeProfile, setActiveProfile] = useState(null);
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10" id="services">
@@ -87,29 +87,24 @@ export default function Services() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {services.map((service) => (
-            service === '个人简历' ? (
-              <button
-                className="border border-line bg-white/58 p-5 text-left text-base font-semibold text-ink transition hover:-translate-y-1 hover:shadow-card"
-                key={service}
-                type="button"
-                onClick={() => setIsResumeOpen(true)}
-              >
-                <span className="mb-5 block h-px w-12 bg-sage" />
-                {service}
-              </button>
-            ) : (
-              <div
-                className="border border-line bg-white/58 p-5 text-base font-semibold text-ink transition hover:-translate-y-1 hover:shadow-card"
-                key={service}
-              >
-                <span className="mb-5 block h-px w-12 bg-sage" />
-                {service}
-              </div>
-            )
+            <button
+              className="border border-line bg-white/58 p-5 text-left text-base font-semibold text-ink transition hover:-translate-y-1 hover:shadow-card"
+              key={service}
+              type="button"
+              onClick={() => setActiveProfile(serviceProfiles[service])}
+            >
+              <span className="mb-5 block h-px w-12 bg-sage" />
+              {service}
+            </button>
           ))}
         </div>
       </div>
-      {isResumeOpen && <ResumeOverlay onClose={() => setIsResumeOpen(false)} />}
+      {activeProfile && (
+        <ServiceProfileOverlay
+          profile={activeProfile}
+          onClose={() => setActiveProfile(null)}
+        />
+      )}
     </section>
   );
 }
