@@ -9,10 +9,10 @@ const toolCards = [
     variant: 'tool-card--secondary',
     style: {
       '--card-left': '64%',
-      '--card-top': '18%',
+      '--card-top': '14%',
       '--card-width': '13rem',
-      '--card-rotate': '4deg',
-      '--card-depth': '18px',
+      '--card-rotate': '1.2deg',
+      '--card-depth': '0px',
       '--card-delay': '-0.4s',
     },
   },
@@ -24,10 +24,10 @@ const toolCards = [
     variant: 'tool-card--primary',
     style: {
       '--card-left': '39%',
-      '--card-top': '29.5%',
+      '--card-top': '24%',
       '--card-width': '13.8rem',
-      '--card-rotate': '-5deg',
-      '--card-depth': '56px',
+      '--card-rotate': '-1.4deg',
+      '--card-depth': '0px',
       '--card-delay': '0s',
     },
   },
@@ -39,10 +39,10 @@ const toolCards = [
     variant: 'tool-card--secondary',
     style: {
       '--card-left': '66%',
-      '--card-top': '41%',
+      '--card-top': '34%',
       '--card-width': '13.2rem',
-      '--card-rotate': '4deg',
-      '--card-depth': '30px',
+      '--card-rotate': '1.1deg',
+      '--card-depth': '0px',
       '--card-delay': '-0.8s',
     },
   },
@@ -54,10 +54,10 @@ const toolCards = [
     variant: 'tool-card--primary',
     style: {
       '--card-left': '61%',
-      '--card-top': '52.5%',
+      '--card-top': '44%',
       '--card-width': '13.4rem',
-      '--card-rotate': '3deg',
-      '--card-depth': '50px',
+      '--card-rotate': '1deg',
+      '--card-depth': '0px',
       '--card-delay': '-1.2s',
     },
   },
@@ -69,10 +69,10 @@ const toolCards = [
     variant: 'tool-card--secondary',
     style: {
       '--card-left': '39%',
-      '--card-top': '64%',
+      '--card-top': '55%',
       '--card-width': '12.8rem',
-      '--card-rotate': '-5deg',
-      '--card-depth': '24px',
+      '--card-rotate': '-1.2deg',
+      '--card-depth': '0px',
       '--card-delay': '-2.8s',
     },
   },
@@ -84,10 +84,10 @@ const toolCards = [
     variant: 'tool-card--primary',
     style: {
       '--card-left': '41%',
-      '--card-top': '75.5%',
+      '--card-top': '66%',
       '--card-width': '14rem',
-      '--card-rotate': '-4deg',
-      '--card-depth': '60px',
+      '--card-rotate': '-1.2deg',
+      '--card-depth': '0px',
       '--card-delay': '-2.1s',
     },
   },
@@ -99,10 +99,10 @@ const toolCards = [
     variant: 'tool-card--tertiary',
     style: {
       '--card-left': '67%',
-      '--card-top': '86.5%',
+      '--card-top': '77%',
       '--card-width': '11.7rem',
-      '--card-rotate': '4deg',
-      '--card-depth': '12px',
+      '--card-rotate': '1.2deg',
+      '--card-depth': '0px',
       '--card-delay': '-1.7s',
     },
   },
@@ -114,10 +114,10 @@ const toolCards = [
     variant: 'tool-card--tertiary',
     style: {
       '--card-left': '40%',
-      '--card-top': '96%',
+      '--card-top': '88%',
       '--card-width': '13rem',
-      '--card-rotate': '-3deg',
-      '--card-depth': '10px',
+      '--card-rotate': '-1.1deg',
+      '--card-depth': '0px',
       '--card-delay': '-3.4s',
     },
   },
@@ -136,8 +136,8 @@ export default function ToolLogoStack() {
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
 
-    stack.style.setProperty('--stack-rotate-x', `${(-y * 7).toFixed(2)}deg`);
-    stack.style.setProperty('--stack-rotate-y', `${(x * 9).toFixed(2)}deg`);
+    stack.style.setProperty('--stack-rotate-x', `${(-y * 2).toFixed(2)}deg`);
+    stack.style.setProperty('--stack-rotate-y', `${(x * 3).toFixed(2)}deg`);
   };
 
   const handlePointerLeave = () => {

@@ -171,6 +171,19 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
             </dl>
           )}
 
+          {caseStudy.structure && (
+            <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2">
+              {caseStudy.structure.map((item) => (
+                <section className="border border-line bg-white/58 p-4" key={item.label}>
+                  <h4 className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-moss">
+                    {item.label}
+                  </h4>
+                  <p className="mt-3 text-sm leading-7 text-sage">{item.value}</p>
+                </section>
+              ))}
+            </div>
+          )}
+
           <div className="mt-7 grid gap-3 sm:mt-10 sm:gap-4">
             {caseStudy.details.map((detail) => (
               <p className="border-t border-line pt-3 text-sm leading-7 text-sage sm:pt-4" key={detail}>
