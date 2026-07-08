@@ -38,6 +38,7 @@ function WorkCover({ work, index }) {
 
 function getPreviewClassName(aspect) {
   const aspectClassNames = {
+    long: 'aspect-[9/16]',
     tall: 'aspect-[3/4]',
     wide: 'aspect-[2.44/1]',
     square: 'aspect-square',
@@ -50,6 +51,10 @@ function getPreviewClassName(aspect) {
 
 function getLightboxMediaClassName(aspect) {
   const baseClassName = 'bg-white object-contain';
+
+  if (aspect === 'long') {
+    return `${baseClassName} w-full max-w-[min(100%,52rem)]`;
+  }
 
   if (aspect === 'tall') {
     return `${baseClassName} w-full max-w-[min(100%,54rem)]`;
@@ -66,6 +71,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
   const isLightboxVideo = lightboxImage?.type === 'video';
   const lightboxMediaSrc = lightboxImage?.src;
   const caseNumber = String(caseStudy.caseNumber ?? 1).padStart(2, '0');
+  const isLongPreviewLayout = caseStudy.displayMode === 'long-preview';
   const showPreviousImage = () => {
     setLightboxIndex((currentIndex) =>
       currentIndex === null
@@ -219,10 +225,14 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   ) : (
                     <img
                       alt={image.alt}
-                      className={getPreviewClassName(image.aspect)}
+                      className={
+                        isLongPreviewLayout
+                          ? 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]'
+                          : getPreviewClassName(image.aspect)
+                      }
                       decoding="async"
                       loading="lazy"
-                      src={image.src}
+                      src={image.previewSrc ?? image.src}
                     />
                   )}
                 </button>

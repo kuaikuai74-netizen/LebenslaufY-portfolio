@@ -1,4 +1,5 @@
 import { contact, profile } from '../data/portfolio';
+import Cubes from './Cubes';
 
 export default function Contact() {
   return (
@@ -7,6 +8,21 @@ export default function Contact() {
         <div className="absolute bottom-0 right-0 h-72 w-72 wave-card opacity-[0.12]" />
         <div className="absolute right-10 top-10 hidden h-32 w-32 rounded-full border border-line sm:block" />
         <div className="absolute left-10 top-10 h-px w-32 bg-sage/35" />
+        <div className="pointer-events-auto absolute -right-8 bottom-4 hidden w-[24rem] opacity-[0.18] mix-blend-multiply sm:block lg:right-6 lg:w-[28rem]">
+          <Cubes
+            gridSize={7}
+            maxAngle={34}
+            radius={2.8}
+            cellGap={5}
+            borderStyle="1px solid rgba(31, 41, 40, 0.18)"
+            faceColor="#eef1ea"
+            rippleColor="#6f7a70"
+            rippleSpeed={1.6}
+            shadow="0 12px 26px rgba(31, 41, 40, 0.08)"
+            autoAnimate
+            rippleOnClick
+          />
+        </div>
 
         <div className="relative z-10 max-w-[44rem]">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-moss">

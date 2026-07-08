@@ -1,26 +1,24 @@
 const brandImageFiles = [
-  "brand-campaign-01.png",
-  "brand-campaign-02.png",
-  "brand-campaign-03.png",
-  "brand-campaign-04.png",
-  "brand-campaign-05.png",
-  "brand-campaign-06.png",
-  "brand-campaign-07.png",
-  "brand-campaign-08.png",
-  "brand-campaign-09.png",
-  "brand-campaign-10.png",
-  "brand-campaign-11.png",
-  "brand-campaign-12.png",
-  "brand-campaign-13.png",
-  "brand-campaign-14.png",
-  "brand-campaign-15.png",
-  "brand-campaign-16.png",
-  "brand-campaign-17.png",
-  "brand-campaign-18.png"
+  {
+    fileName: 'five-secs-brand-system.png',
+    previewFileName: 'previews/five-secs-brand-system-preview.png',
+    alt: 'FIVE SECS 运动服饰品牌视觉系统长图',
+  },
+  {
+    fileName: 'miaoyin-brand-system.png',
+    previewFileName: 'previews/miaoyin-brand-system-preview.png',
+    alt: 'MIAOYIN 宠物营养品牌视觉系统长图',
+  },
+  {
+    fileName: 'kafier-brand-system.png',
+    previewFileName: 'previews/kafier-brand-system-preview.png',
+    alt: 'Kafier 户外品牌视觉系统长图',
+  },
 ];
 
-export const brandImages = brandImageFiles.map((fileName, index) => ({
-  src: `/portfolio/brand-campaign/${fileName}`,
-  alt: `品牌传播物料 ${index + 1}`,
-  aspect: 'wide',
+export const brandImages = brandImageFiles.map((image) => ({
+  src: `/portfolio/brand-campaign/${image.fileName}`,
+  previewSrc: `/portfolio/brand-campaign/${image.previewFileName}`,
+  alt: image.alt,
+  aspect: 'long',
 }));

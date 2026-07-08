@@ -186,6 +186,7 @@ export const works = [
         '把产品图、场景图和短文案组合成适合站内外投放的视觉资产。',
         '建立可延展的视觉规则，减少重复沟通成本，并提高团队批量产出的一致性。',
       ],
+      displayMode: 'long-preview',
       images: brandImages,
     },
   },
