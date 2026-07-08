@@ -1,12 +1,13 @@
 import { hero, profile, stats } from '../data/portfolio';
 import Prism from './Prism';
+import ToolLogoStack from './ToolLogoStack';
 
 export default function Hero() {
   return (
     <section className="relative mx-auto max-w-7xl px-5 pb-14 pt-24 sm:min-h-screen sm:px-8 sm:pb-20 sm:pt-28 lg:px-10" id="top">
       <div className="grid overflow-hidden border border-line bg-white/82 shadow-card lg:min-h-[calc(100vh-8rem)] lg:grid-cols-[0.82fr_1.18fr]">
-        <div className="relative min-h-[210px] border-b border-line bg-[#fbfcf7] sm:min-h-[360px] lg:min-h-[420px] lg:border-b-0 lg:border-r">
-          <div className="absolute inset-0 opacity-[0.1] mix-blend-multiply grayscale saturate-0 contrast-75">
+        <div className="relative min-h-[300px] border-b border-line bg-[#fbfcf7] sm:min-h-[470px] lg:min-h-[420px] lg:border-b-0 lg:border-r">
+          <div className="absolute inset-0 opacity-[0.06] mix-blend-multiply grayscale saturate-0 contrast-75">
             <Prism
               animationType="rotate"
               timeScale={0.16}
@@ -21,14 +22,7 @@ export default function Hero() {
               suspendWhenOffscreen
             />
           </div>
-          <div className="absolute left-6 top-8 h-40 w-20 rounded-t-full bg-[#eef4e9]/45 sm:left-8 sm:top-10 sm:h-56 sm:w-24" />
-          <div className="absolute bottom-0 left-0 h-36 w-44 soft-photo sm:h-52 sm:w-56" />
-          <div className="absolute bottom-8 right-8 h-32 w-32 rounded-full border border-moss/14 sm:bottom-10 sm:right-10 sm:h-48 sm:w-48" />
-          <div className="absolute right-12 top-16 h-44 w-12 rounded-full bg-white/95 shadow-[0_18px_48px_rgba(31,41,40,0.07)] sm:right-16 sm:top-24 sm:h-72 sm:w-16" />
-          <div className="absolute right-24 top-10 h-44 w-px rotate-[-18deg] bg-moss/16 sm:right-28 sm:top-12 sm:h-64" />
-          <div className="absolute right-28 top-14 h-36 w-px rotate-[18deg] bg-moss/10 sm:right-36 sm:top-20 sm:h-52" />
-          <div className="absolute left-8 top-28 h-28 w-px rotate-[28deg] bg-moss/18 sm:left-10 sm:top-36 sm:h-40" />
-          <div className="absolute left-12 top-24 h-32 w-px rotate-[-18deg] bg-moss/14 sm:left-16 sm:top-28 sm:h-48" />
+          <ToolLogoStack />
         </div>
 
         <div className="relative flex flex-col justify-between gap-6 p-5 sm:gap-12 sm:p-12 lg:p-16">

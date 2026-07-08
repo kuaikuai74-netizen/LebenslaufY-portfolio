@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import SectionHeader from './SectionHeader';
 import { works } from '../data/portfolio';
 
@@ -218,7 +219,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
         </div>
       </div>
 
-      {lightboxImage && (
+      {lightboxImage && createPortal(
         <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/78 p-3 sm:p-4">
           <button
             className="absolute inset-0 cursor-zoom-out"
@@ -347,7 +348,8 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
               </div>
             </aside>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

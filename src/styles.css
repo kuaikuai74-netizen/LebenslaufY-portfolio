@@ -15,11 +15,12 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 6.5rem;
 }
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 0;
   color: #1f2928;
   background:
     radial-gradient(circle at 12% 0%, rgba(196, 208, 189, 0.16), transparent 26rem),
@@ -126,6 +127,305 @@ a {
     linear-gradient(rgba(31, 41, 40, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(31, 41, 40, 0.045) 1px, transparent 1px);
   background-size: 30px 30px;
+}
+
+.tool-logo-stage {
+  --stack-rotate-x: 0deg;
+  --stack-rotate-y: 0deg;
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.9), transparent 12rem),
+    linear-gradient(155deg, rgba(255, 254, 250, 0.7), rgba(239, 243, 235, 0.52));
+}
+
+.tool-logo-stage__grid {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(rgba(31, 41, 40, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 41, 40, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.6;
+}
+
+.tool-logo-stage__beam {
+  position: absolute;
+  left: 54%;
+  top: -8%;
+  z-index: -1;
+  width: min(17rem, 72%);
+  height: 124%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 0 70px rgba(31, 41, 40, 0.08);
+  transform: translateX(-50%) rotate(19deg);
+}
+
+.tool-logo-stack {
+  position: absolute;
+  inset: 1rem;
+  transform-style: preserve-3d;
+  perspective: 980px;
+  transform:
+    rotateX(var(--stack-rotate-x))
+    rotateY(var(--stack-rotate-y));
+  transition: transform 420ms ease;
+}
+
+.tool-card {
+  position: absolute;
+  left: var(--card-left);
+  top: var(--card-top);
+  width: min(var(--card-width), 78%);
+  min-height: 4.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border: 1px solid rgba(31, 41, 40, 0.12);
+  border-radius: 1rem;
+  padding: 0.72rem 1rem;
+  box-shadow: 0 24px 70px rgba(31, 41, 40, 0.12);
+  transform:
+    translate3d(-50%, -50%, var(--card-depth))
+    rotate(var(--card-rotate));
+  animation: tool-card-float 6.8s ease-in-out infinite;
+  animation-delay: var(--card-delay);
+  transition:
+    border-color 240ms ease,
+    box-shadow 240ms ease,
+    transform 240ms ease;
+  will-change: transform;
+}
+
+.tool-card::before {
+  content: "";
+  position: absolute;
+  inset: 0.38rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 0.72rem;
+  pointer-events: none;
+}
+
+.tool-card:hover {
+  border-color: rgba(111, 122, 112, 0.36);
+  box-shadow: 0 32px 86px rgba(31, 41, 40, 0.18);
+  transform:
+    translate3d(-50%, -56%, calc(var(--card-depth) + 34px))
+    rotate(var(--card-rotate))
+    scale(1.035);
+}
+
+.tool-card--primary,
+.tool-card--dark,
+.tool-card--ink {
+  background: rgba(31, 41, 40, 0.92);
+  color: #fffefa;
+}
+
+.tool-card--secondary,
+.tool-card--light,
+.tool-card--paper,
+.tool-card--red {
+  background:
+    linear-gradient(135deg, rgba(245, 248, 241, 0.94), rgba(230, 235, 226, 0.88));
+  color: #1f2928;
+  backdrop-filter: blur(14px);
+}
+
+.tool-card--tertiary {
+  background:
+    linear-gradient(135deg, rgba(255, 254, 250, 0.9), rgba(249, 249, 244, 0.78));
+  color: rgba(31, 41, 40, 0.76);
+  backdrop-filter: blur(14px);
+}
+
+.tool-icon {
+  position: relative;
+  display: grid;
+  width: 3.15rem;
+  height: 3.15rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.9rem;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.tool-icon::after {
+  content: "";
+  position: absolute;
+  inset: -0.32rem;
+  border: 1px solid currentColor;
+  border-radius: 1.1rem;
+  opacity: 0.16;
+}
+
+.tool-icon--primary,
+.tool-icon--codex {
+  background: #fdfcf9;
+  color: #1f2928;
+}
+
+.tool-icon--secondary,
+.tool-icon--comfy {
+  background: #eef4e9;
+  color: #4c585f;
+}
+
+.tool-icon--c4d {
+  background: #eef4e9;
+  color: #4c585f;
+}
+
+.tool-icon--tertiary,
+.tool-icon--jianying,
+.tool-icon--premiere {
+  background: rgba(31, 41, 40, 0.08);
+  color: rgba(31, 41, 40, 0.68);
+}
+
+.tool-icon--vibe {
+  background: #eef4e9;
+  color: #4c585f;
+}
+
+.tool-card__content {
+  display: grid;
+  min-width: 0;
+  gap: 0.16rem;
+}
+
+.tool-card__name {
+  overflow: hidden;
+  font-size: 1.05rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.tool-card__meta {
+  color: currentColor;
+  overflow: hidden;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  opacity: 0.62;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+@keyframes tool-card-float {
+  0%,
+  100% {
+    margin-top: 0;
+  }
+
+  50% {
+    margin-top: -0.28rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tool-card {
+    width: min(var(--card-width), 72%);
+  }
+}
+
+@media (max-width: 640px) {
+  .tool-logo-stack {
+    inset: 0.75rem;
+    transform:
+      rotateX(var(--stack-rotate-x))
+      rotateY(var(--stack-rotate-y))
+      scale(1);
+  }
+
+  .tool-card {
+    --card-depth: 0px;
+    width: 8.25rem;
+    min-height: 3.08rem;
+    gap: 0.48rem;
+    border-radius: 0.76rem;
+    padding: 0.42rem 0.52rem;
+    animation: none;
+    box-shadow: 0 14px 40px rgba(31, 41, 40, 0.1);
+    transform: translate3d(-50%, -50%, var(--card-depth));
+  }
+
+  .tool-card:hover {
+    transform: translate3d(-50%, -52%, calc(var(--card-depth) + 18px)) scale(1.02);
+  }
+
+  .tool-icon {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 0.58rem;
+    font-size: 0.68rem;
+  }
+
+  .tool-icon::after {
+    inset: -0.18rem;
+    border-radius: 0.72rem;
+  }
+
+  .tool-card__name {
+    font-size: 0.62rem;
+  }
+
+  .tool-card__meta {
+    font-size: 0.38rem;
+    letter-spacing: 0.035em;
+  }
+
+  .tool-card:nth-child(1) {
+    left: 70%;
+    top: 14%;
+  }
+
+  .tool-card:nth-child(2) {
+    left: 30%;
+    top: 24%;
+  }
+
+  .tool-card:nth-child(3) {
+    left: 70%;
+    top: 36%;
+  }
+
+  .tool-card:nth-child(4) {
+    left: 30%;
+    top: 48%;
+  }
+
+  .tool-card:nth-child(5) {
+    left: 70%;
+    top: 60%;
+  }
+
+  .tool-card:nth-child(6) {
+    left: 30%;
+    top: 72%;
+  }
+
+  .tool-card:nth-child(7) {
+    left: 70%;
+    top: 84%;
+  }
+
+  .tool-card:nth-child(8) {
+    left: 30%;
+    top: 91%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

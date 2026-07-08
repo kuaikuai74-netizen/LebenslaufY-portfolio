@@ -91,7 +91,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper/96 shadow-[0_10px_30px_rgba(31,41,40,0.04)]">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper shadow-[0_10px_30px_rgba(31,41,40,0.04)]">
       <div
         ref={progressRef}
         className="absolute inset-x-0 bottom-0 h-px origin-left bg-ink/70 transition-transform duration-300"
@@ -114,7 +114,7 @@ export default function Navbar() {
           </span>
         </a>
 
-        <div className="hidden items-center rounded-full border border-line bg-white/68 p-1 text-sm text-sage shadow-[0_12px_36px_rgba(31,41,40,0.045)] md:flex">
+        <div className="hidden items-center rounded-full border border-line bg-white p-1 text-sm text-sage shadow-[0_12px_36px_rgba(31,41,40,0.045)] md:flex">
           {navItems.map((item) => (
             <a
               className={`rounded-full px-4 py-2 transition ${
@@ -132,7 +132,7 @@ export default function Navbar() {
         </div>
 
         <a
-          className="group inline-flex shrink-0 items-center gap-3 rounded-full border border-line bg-white/75 px-4 py-2 text-sm font-semibold text-ink transition hover:-translate-y-0.5 hover:border-moss/35 hover:bg-mist/60"
+          className="group inline-flex shrink-0 items-center gap-3 rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:-translate-y-0.5 hover:border-moss/35 hover:bg-mist/60"
           href="#contact"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-moss transition group-hover:scale-125" aria-hidden="true" />
