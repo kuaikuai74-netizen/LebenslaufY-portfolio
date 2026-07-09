@@ -3,6 +3,9 @@ import { createPortal } from 'react-dom';
 import SectionHeader from './SectionHeader';
 import { works } from '../data/portfolio';
 
+const INITIAL_VISIBLE_MEDIA_COUNT = 24;
+const LIGHTBOX_THUMBNAIL_RADIUS = 10;
+
 function ImageWithStatus({ alt, className, src, ...props }) {
   const [status, setStatus] = useState('loading');
 
@@ -27,6 +30,42 @@ function ImageWithStatus({ alt, className, src, ...props }) {
           {status === 'error' ? 'Image unavailable' : 'Loading image'}
         </span>
       )}
+    </span>
+  );
+}
+
+function ProgressiveImage({ alt, className, previewSrc, src, ...props }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const lowQualitySrc = previewSrc && previewSrc !== src ? previewSrc : null;
+  const imageClassName = className.replace(/(?:^|\s)(?:w-\S+|max-w-\S+|max-h-\S+)(?=\s|$)/g, '').trim();
+
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [src]);
+
+  if (!lowQualitySrc) {
+    return <ImageWithStatus alt={alt} className={className} src={src} {...props} />;
+  }
+
+  return (
+    <span className={`relative block ${className}`}>
+      <img
+        alt=""
+        aria-hidden="true"
+        className={`${imageClassName} block h-auto w-full transition-opacity duration-300 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        src={lowQualitySrc}
+      />
+      <img
+        alt={alt}
+        className={`${imageClassName} absolute inset-0 h-auto w-full transition-opacity duration-300 ${
+          isLoaded ? 'opacity-100' : 'opacity-0'
+        }`}
+        src={src}
+        onLoad={() => setIsLoaded(true)}
+        {...props}
+      />
     </span>
   );
 }
@@ -81,31 +120,53 @@ function getLightboxMediaClassName(aspect) {
   const baseClassName = 'bg-white object-contain';
 
   if (aspect === 'long') {
-    return `${baseClassName} w-full max-w-[min(100%,52rem)]`;
+    return `${baseClassName} w-[min(100%,56rem)]`;
   }
 
   if (aspect === 'tall') {
-    return `${baseClassName} w-full max-w-[min(100%,54rem)]`;
+    return `${baseClassName} w-[min(100%,56rem)]`;
   }
 
   return `${baseClassName} max-h-[calc(92vh-4rem)] w-auto max-w-full sm:max-h-[calc(92vh-5rem)]`;
 }
 
 function getThumbnailSrc(image) {
-  return image.displaySrc ?? image.previewSrc ?? image.src;
+  return image.thumbnailSrc ?? image.previewSrc ?? image.displaySrc ?? image.src;
 }
 
 function getLightboxSrc(image) {
   return image.src;
 }
 
+function getDisplayTitle(title) {
+  return title.replace(/[\s\u00a0\u3000]*\d+$/, '');
+}
+
+function getLightboxThumbnails(images, activeIndex) {
+  if (activeIndex === null) {
+    return [];
+  }
+
+  const startIndex = Math.max(0, activeIndex - LIGHTBOX_THUMBNAIL_RADIUS);
+  const endIndex = Math.min(images.length, activeIndex + LIGHTBOX_THUMBNAIL_RADIUS + 1);
+
+  return images.slice(startIndex, endIndex).map((image, offset) => ({
+    image,
+    index: startIndex + offset,
+  }));
+}
+
 function CaseStudyOverlay({ caseStudy, onClose }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [visibleMediaCount, setVisibleMediaCount] = useState(INITIAL_VISIBLE_MEDIA_COUNT);
   const lightboxScrollRef = useRef(null);
   const lightboxImage =
     lightboxIndex === null ? null : caseStudy.images[lightboxIndex];
   const isLightboxVideo = lightboxImage?.type === 'video';
   const lightboxMediaSrc = lightboxImage ? getLightboxSrc(lightboxImage) : undefined;
+  const visibleImages = caseStudy.images.slice(0, visibleMediaCount);
+  const lightboxThumbnails = getLightboxThumbnails(caseStudy.images, lightboxIndex);
+  const canLoadMoreImages = visibleMediaCount < caseStudy.images.length;
   const caseNumber = String(caseStudy.caseNumber ?? 1).padStart(2, '0');
   const isLongPreviewLayout = caseStudy.displayMode === 'long-preview';
   const showPreviousImage = () => {
@@ -127,6 +188,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
   useEffect(() => {
     setLightboxIndex(null);
+    setVisibleMediaCount(INITIAL_VISIBLE_MEDIA_COUNT);
   }, [caseStudy]);
 
   useEffect(() => {
@@ -246,7 +308,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
         <div className="order-2 flex min-h-0 flex-col border-t border-line lg:order-1 lg:border-r lg:border-t-0">
           <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {caseStudy.images.map((image, index) => (
+              {visibleImages.map((image, index) => (
                 <button
                   className="group block w-full overflow-hidden rounded-[1.25rem] border border-line bg-white text-left shadow-card"
                   key={image.src}
@@ -269,6 +331,21 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                 </button>
               ))}
             </div>
+            {canLoadMoreImages && (
+              <div className="mt-6 flex justify-center">
+                <button
+                  className="border border-line bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-sage transition hover:border-moss hover:text-ink"
+                  type="button"
+                  onClick={() =>
+                    setVisibleMediaCount((currentCount) =>
+                      Math.min(currentCount + INITIAL_VISIBLE_MEDIA_COUNT, caseStudy.images.length),
+                    )
+                  }
+                >
+                  加载更多作品
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -294,9 +371,9 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
             </button>
 
             <div className="hidden border-r border-line bg-white p-3 md:flex md:flex-col md:gap-3 md:overflow-y-auto">
-              {caseStudy.images.map((image, index) => (
+              {lightboxThumbnails.map(({ image, index }) => (
                 <button
-                  className={`aspect-square overflow-hidden rounded-2xl border bg-white transition ${
+                  className={`relative aspect-square overflow-hidden rounded-2xl border bg-white transition ${
                     lightboxIndex === index
                       ? 'border-moss ring-2 ring-moss/20'
                       : 'border-line opacity-55 hover:opacity-100'
@@ -306,23 +383,19 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   onClick={() => setLightboxIndex(index)}
                   aria-label={`切换到原图 ${index + 1}`}
                 >
-                  {image.type === 'video' ? (
-                    <video
-                      aria-label={image.alt}
-                      className="h-full w-full object-cover"
-                      muted
-                      playsInline
-                      preload="metadata"
-                      src={image.src}
-                    />
-                  ) : (
-                    <ImageWithStatus
-                      alt=""
-                      className="h-full w-full object-cover"
-                      decoding="async"
-                      loading="lazy"
-                      src={getThumbnailSrc(image)}
-                    />
+                  <ImageWithStatus
+                    alt=""
+                    className="h-full w-full object-cover"
+                    decoding="async"
+                    loading="lazy"
+                    src={getThumbnailSrc(image)}
+                  />
+                  {image.type === 'video' && (
+                    <span className="pointer-events-none absolute inset-0 grid place-items-center">
+                      <span className="grid h-7 w-7 place-items-center rounded-full bg-ink/82 text-[0.65rem] text-white">
+                        ▶
+                      </span>
+                    </span>
                   )}
                 </button>
               ))}
@@ -330,21 +403,24 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
             <div className="relative min-h-0 bg-white">
               <div ref={lightboxScrollRef} className="h-full overflow-auto overscroll-contain p-3 sm:p-5">
-                <div className="grid min-h-full place-items-start justify-center">
+                <div className="flex min-h-full justify-center">
                   {isLightboxVideo ? (
                     <video
                       aria-label={lightboxImage.alt}
                       className={getLightboxMediaClassName(lightboxImage.aspect)}
                       controls
                       playsInline
+                      poster={getThumbnailSrc(lightboxImage)}
+                      preload="metadata"
                       src={lightboxMediaSrc}
                     />
                   ) : (
-                    <ImageWithStatus
+                    <ProgressiveImage
                       alt={lightboxImage.alt}
                       className={getLightboxMediaClassName(lightboxImage.aspect)}
                       decoding="async"
                       loading="eager"
+                      previewSrc={getThumbnailSrc(lightboxImage)}
                       src={lightboxMediaSrc}
                     />
                   )}
@@ -374,7 +450,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                 {caseStudy.eyebrow}
               </p>
               <h4 className="mt-5 text-2xl font-light leading-tight text-ink xl:text-3xl">
-                {lightboxImage.alt}
+                {getDisplayTitle(lightboxImage.alt)}
               </h4>
               <p className="mt-7 border-l border-moss/50 pl-5 text-sm leading-7 text-sage">
                 点击缩略图可以快速切换图片，也可以使用左右箭头或键盘方向键浏览完整主图与详情页视觉。
