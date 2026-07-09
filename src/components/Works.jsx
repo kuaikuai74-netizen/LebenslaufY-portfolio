@@ -443,7 +443,10 @@ export default function Works() {
       </div>
 
       {activeCase && (
-        <CaseStudyOverlay caseStudy={activeCase} onClose={() => setActiveCase(null)} />
+        createPortal(
+          <CaseStudyOverlay caseStudy={activeCase} onClose={() => setActiveCase(null)} />,
+          document.body,
+        )
       )}
     </section>
   );
