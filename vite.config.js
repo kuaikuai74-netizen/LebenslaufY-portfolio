@@ -4,7 +4,7 @@ import autoprefixer from 'autoprefixer';
 import tailwindcss from 'tailwindcss';
 
 export default defineConfig({
-  base: './',
+  base: process.env.GITHUB_PAGES ? '/LebenslaufY-portfolio/' : './',
   plugins: [react()],
   css: {
     postcss: {

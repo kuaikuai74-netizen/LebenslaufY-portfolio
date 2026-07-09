@@ -2,6 +2,7 @@ import { aplusLongImages } from './aplusLongImages.js';
 import { brandImages } from './brandImages.js';
 import { motionMedia } from './motionMedia.js';
 import { productMainImages } from './productMainImages.js';
+import { assetPath } from './assetPath.js';
 
 export const navItems = [
   { label: '概况', href: '#top' },
@@ -59,7 +60,7 @@ export const works = [
     description:
       '为家具、家居、生活方式类产品生成主图视觉与场景图，强调产品卖点、质感表达与平台转化。',
     cover: {
-      src: '/portfolio/covers/product-main-visual.svg',
+      src: assetPath('portfolio/covers/product-main-visual.svg'),
       alt: '产品主图视觉海报封面',
     },
     caseStudy: {
@@ -93,7 +94,7 @@ export const works = [
     description:
       '围绕产品核心卖点设计模块化详情页，让品牌调性、功能说明和购买理由更清晰。',
     cover: {
-      src: '/portfolio/covers/aplus-visual-system.svg',
+      src: assetPath('portfolio/covers/aplus-visual-system.svg'),
       alt: 'A+ 详情页视觉系统海报封面',
     },
     caseStudy: {
@@ -127,7 +128,7 @@ export const works = [
     description:
       '使用 AI 视频与剪辑工具制作动态展示、产品氛围短片、社媒内容和视觉分镜。',
     cover: {
-      src: '/portfolio/covers/ai-video-motion.svg',
+      src: assetPath('portfolio/covers/ai-video-motion.svg'),
       alt: 'AI 视频与动态视觉海报封面',
     },
     caseStudy: {
@@ -161,7 +162,7 @@ export const works = [
     description:
       '完成品牌活动视觉和社媒图文，保持统一且可延展的品牌表达。',
     cover: {
-      src: '/portfolio/covers/brand-campaign.svg',
+      src: assetPath('portfolio/covers/brand-campaign.svg'),
       alt: '品牌传播物料海报封面',
     },
     caseStudy: {

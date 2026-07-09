@@ -1,3 +1,5 @@
+import { assetPath } from './assetPath.js';
+
 const brandImageFiles = [
   {
     fileName: 'five-secs-brand-system.png',
@@ -26,8 +28,8 @@ const brandImageFiles = [
 ];
 
 export const brandImages = brandImageFiles.map((image) => ({
-  src: `/portfolio/brand-campaign/${image.fileName}`,
-  previewSrc: `/portfolio/brand-campaign/${image.previewFileName}`,
+  src: assetPath(`portfolio/brand-campaign/${image.fileName}`),
+  previewSrc: assetPath(`portfolio/brand-campaign/${image.previewFileName}`),
   alt: image.alt,
   aspect: 'long',
 }));

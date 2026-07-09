@@ -1,3 +1,5 @@
+import { assetPath } from './assetPath.js';
+
 const motionMediaFiles = [
   {
     "fileName": "motion-media-01.gif",
@@ -30,7 +32,7 @@ const motionMediaFiles = [
 ];
 
 export const motionMedia = motionMediaFiles.map((item, index) => ({
-  src: `/portfolio/motion-media/${item.fileName}`,
+  src: assetPath(`portfolio/motion-media/${item.fileName}`),
   alt: `AI 视频与动态视觉 ${index + 1}`,
   aspect: 'wide',
   ...(item.type === 'video' ? { type: 'video' } : {}),

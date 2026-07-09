@@ -1,3 +1,5 @@
+import { assetPath } from './assetPath.js';
+
 const aplusLongImageFiles = [
   "aplus-long-01.png",
   "aplus-long-02.png",
@@ -17,9 +19,9 @@ const aplusLongImageFiles = [
 ];
 
 export const aplusLongImages = aplusLongImageFiles.map((fileName, index) => ({
-  src: `/portfolio/aplus-long/${fileName}`,
-  displaySrc: `/portfolio/aplus-long-display/${fileName.replace('.png', '.jpg')}`,
-  previewSrc: `/portfolio/aplus-long-preview/${fileName.replace('.png', '.jpg')}`,
+  src: assetPath(`portfolio/aplus-long/${fileName}`),
+  displaySrc: assetPath(`portfolio/aplus-long-display/${fileName.replace('.png', '.jpg')}`),
+  previewSrc: assetPath(`portfolio/aplus-long-preview/${fileName.replace('.png', '.jpg')}`),
   alt: `A+ 详情页长图 ${index + 1}`,
   aspect: 'tall',
 }));

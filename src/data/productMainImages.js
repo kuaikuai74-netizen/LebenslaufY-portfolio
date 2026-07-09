@@ -1,3 +1,5 @@
+import { assetPath } from './assetPath.js';
+
 const productMainGroups = [
   {
     "category": "升降桌",
@@ -226,7 +228,7 @@ const productMainGroups = [
 
 export const productMainImages = productMainGroups.flatMap((group) =>
   group.files.map((fileName) => ({
-    src: `/portfolio/product-main/${fileName}`,
+    src: assetPath(`portfolio/product-main/${fileName}`),
     alt: group.category,
     aspect: 'square',
   })),
