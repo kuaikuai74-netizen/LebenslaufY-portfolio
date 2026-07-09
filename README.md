@@ -1,34 +1,21 @@
 # Personal Portfolio
 
-这是一个基于 React + Vite 的个人作品集网站基础版本，面向视觉设计师 / AI 设计师 / 品牌设计师。
+This is a basic version of a personal portfolio website built on React + Vite, targeted at visual designers, AI designers, and brand designers.
 
-## 启动方式
+## Startup method
 
-```bash
-npm install
-npm run dev
-```
+```bashnpm installnpm run dev```
 
-默认开发地址通常为 `http://localhost:5173`。
+The default development address is usually `http://localhost:5173`.
 
-## 目录结构
+## Directory Structure
 
-- `src/App.jsx`：页面结构与内容数据
-- `src/styles.css`：整站视觉、布局与动效
-- `src/main.jsx`：React 入口
-- `public/`：静态资源，包括作品占位图与头像图
+- `src/App.jsx`: Page structure and content data - `src/styles.css`: Site-wide visual design, layout, and animations - `src/main.jsx`: React entry point - `public/`: Static resources, including placeholder images for works and avatar images
 
-## 当前版本包含
+## Current version includes
 
-- 全屏 Hero，含视频背景、导航栏、大标题和联系按钮
-- 个人经历模块，含人物图、介绍、联系方式和数据卡片
-- 精选项目模块，大卡片展示作品封面
-- 个人优势模块，展示能力标签
-- 底部整屏联系页
+- Full-screen Hero section, featuring a video background, navigation bar, large headline, and contact button - Personal Experience module, including a portrait, introduction, contact information, and data card - Featured Projects module, showcasing project covers in large cards - Personal Strengths module, displaying competency tags - Full-screen contact page at the bottom
 
-## 后续可继续优化
+## Further optimization can be continued in the future
 
-- 替换为你的真实简历内容
-- 接入真实作品截图和项目封面
-- 更换 Hero 背景视频为你的正式素材
-- 根据你提供的参考网站继续精修视觉细节
+- Replace with your real resume content - Include real work screenshots and project covers - Replace the Hero background video with your official material - Continue to refine the visual details based on the reference website you provided
