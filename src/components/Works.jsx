@@ -63,6 +63,10 @@ function getLightboxMediaClassName(aspect) {
   return `${baseClassName} max-h-[calc(92vh-4rem)] w-auto max-w-full sm:max-h-[calc(92vh-5rem)]`;
 }
 
+function getThumbnailSrc(image) {
+  return image.displaySrc ?? image.previewSrc ?? image.src;
+}
+
 function CaseStudyOverlay({ caseStudy, onClose }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const lightboxScrollRef = useRef(null);
@@ -232,7 +236,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                       }
                       decoding="async"
                       loading="lazy"
-                      src={image.previewSrc ?? image.src}
+                      src={getThumbnailSrc(image)}
                     />
                   )}
                 </button>
@@ -290,7 +294,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                       className="h-full w-full object-cover"
                       decoding="async"
                       loading="lazy"
-                      src={image.previewSrc ?? image.src}
+                      src={getThumbnailSrc(image)}
                     />
                   )}
                 </button>

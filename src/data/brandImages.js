@@ -14,6 +14,15 @@ const brandImageFiles = [
     previewFileName: 'previews/kafier-brand-system-preview.png',
     alt: 'Kafier 户外品牌视觉系统长图',
   },
+  ...Array.from({ length: 12 }, (_, index) => {
+    const number = String(index + 1).padStart(2, '0');
+
+    return {
+      fileName: `brand-material-${number}.png`,
+      previewFileName: `previews/brand-material-${number}-preview.png`,
+      alt: `品牌传播物料 ${index + 1}`,
+    };
+  }),
 ];
 
 export const brandImages = brandImageFiles.map((image) => ({

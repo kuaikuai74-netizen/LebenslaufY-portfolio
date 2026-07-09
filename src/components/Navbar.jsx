@@ -100,8 +100,8 @@ export default function Navbar() {
       />
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:px-10">
         <a href="#top" className="group inline-flex min-w-0 items-center gap-3">
-          <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line bg-white text-sm font-black text-ink shadow-glow transition group-hover:border-moss/35 group-hover:bg-mist/50">
-            <span>AI</span>
+          <span className="relative grid h-11 w-14 shrink-0 place-items-center rounded-full border border-line bg-white text-[0.68rem] font-black tracking-[0.08em] text-ink shadow-glow transition group-hover:border-moss/35 group-hover:bg-mist/50">
+            <span>YING</span>
             <span className="absolute -right-1 top-1 h-2 w-2 rounded-full bg-moss" aria-hidden="true" />
           </span>
           <span>

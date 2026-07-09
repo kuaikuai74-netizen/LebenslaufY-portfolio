@@ -1,4 +1,5 @@
 import { hero, profile, stats } from '../data/portfolio';
+import Cubes from './Cubes';
 import Prism from './Prism';
 import ToolLogoStack from './ToolLogoStack';
 
@@ -25,12 +26,31 @@ export default function Hero() {
           <ToolLogoStack />
         </div>
 
-        <div className="relative flex flex-col justify-between gap-6 p-5 sm:gap-12 sm:p-12 lg:p-16">
-          <div className="hidden justify-center sm:flex">
+        <div className="hero-content-panel relative flex flex-col justify-between gap-6 p-5 sm:gap-12 sm:p-12 lg:p-16">
+          <div className="hero-interaction-field" aria-hidden="true">
+            <div className="hero-interaction-cubes">
+              <Cubes
+                gridSize={7}
+                maxAngle={32}
+                radius={2.6}
+                cellGap={5}
+                borderStyle="1px solid rgba(31, 41, 40, 0.12)"
+                faceColor="#f0f3ed"
+                rippleColor="#6f7a70"
+                rippleSpeed={1.7}
+                shadow="0 12px 28px rgba(31, 41, 40, 0.06)"
+                autoAnimate
+                rippleOnClick
+              />
+            </div>
+            <div className="hero-interaction-wave" />
+          </div>
+
+          <div className="relative z-10 hidden justify-center sm:flex">
             <div className="leaf-mark scale-75 sm:scale-100" aria-hidden="true" />
           </div>
 
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="relative z-10 mx-auto max-w-3xl text-center">
             <p className="mb-4 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-moss sm:mb-6 sm:text-xs sm:tracking-[0.36em]">
               {hero.eyebrow}
             </p>
@@ -57,7 +77,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-2 sm:gap-3">
+          <div className="relative z-10 grid grid-cols-4 gap-2 sm:gap-3">
             {stats.map((item) => (
               <div className="border-t border-line pt-4 sm:pt-5" key={item.label}>
                 <strong className="block text-2xl font-light text-ink sm:text-3xl">{item.value}</strong>
@@ -66,7 +86,7 @@ export default function Hero() {
             ))}
           </div>
 
-          <div className="rounded-2xl border border-line bg-paper/80 p-4 sm:rounded-3xl sm:p-5">
+          <div className="relative z-10 rounded-2xl border border-line bg-paper/80 p-4 sm:rounded-3xl sm:p-5">
             <p className="text-sm font-semibold text-ink">{profile.name}</p>
             <p className="mt-2 max-h-28 overflow-hidden text-xs leading-6 text-sage sm:max-h-none sm:text-[0.82rem]">{profile.summary}</p>
           </div>
