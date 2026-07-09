@@ -126,6 +126,10 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
   }, [lightboxIndex]);
 
   useEffect(() => {
+    setLightboxIndex(null);
+  }, [caseStudy]);
+
+  useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
@@ -192,7 +196,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss sm:tracking-[0.34em]">
               {caseStudy.eyebrow}
             </p>
-            <h3 id="case-study-title" className="mt-4 text-3xl font-light text-ink sm:mt-5 sm:text-5xl">
+            <h3 id="case-study-title" className="mt-4 whitespace-nowrap text-[2rem] font-light leading-tight text-ink sm:mt-5 sm:text-[2.65rem] xl:text-[3rem]">
               {caseStudy.title}
             </h3>
             <p className="mt-5 border-l border-moss/50 pl-4 text-sm leading-7 text-sage sm:mt-8 sm:pl-6 sm:text-base sm:leading-8">
@@ -250,27 +254,18 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   onClick={() => setLightboxIndex(index)}
                   aria-label={`打开原图 ${index + 1}`}
                 >
-                  {image.type === 'video' ? (
-                    <video
-                      className={getPreviewClassName(image.aspect)}
-                      muted
-                      playsInline
-                      preload="metadata"
-                      src={image.src}
-                    />
-                  ) : (
-                    <ImageWithStatus
-                      alt={image.alt}
-                      className={
-                        isLongPreviewLayout
-                          ? 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]'
-                          : getPreviewClassName(image.aspect)
-                      }
-                      decoding="async"
-                      loading="lazy"
-                      src={getThumbnailSrc(image)}
-                    />
-                  )}
+                  <ImageWithStatus
+                    alt={image.alt}
+                    className={
+                      isLongPreviewLayout
+                        ? 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]'
+                        : getPreviewClassName(image.aspect)
+                    }
+                    decoding="async"
+                    fetchPriority={index < 6 ? 'high' : 'auto'}
+                    loading={index < 6 ? 'eager' : 'lazy'}
+                    src={getThumbnailSrc(image)}
+                  />
                 </button>
               ))}
             </div>

@@ -229,6 +229,7 @@ const productMainGroups = [
 export const productMainImages = productMainGroups.flatMap((group) =>
   group.files.map((fileName) => ({
     src: assetPath(`portfolio/product-main/${fileName}`),
+    previewSrc: assetPath(`portfolio/product-main-preview/${fileName.replace(/\.(jpg|png)$/i, '.jpg')}`),
     alt: group.category,
     aspect: 'square',
   })),

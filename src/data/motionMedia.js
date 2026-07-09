@@ -33,6 +33,7 @@ const motionMediaFiles = [
 
 export const motionMedia = motionMediaFiles.map((item, index) => ({
   src: assetPath(`portfolio/motion-media/${item.fileName}`),
+  previewSrc: assetPath(`portfolio/motion-media-posters/${item.fileName.replace(/\.(gif|mp4)$/i, '.jpg')}`),
   alt: `AI 视频与动态视觉 ${index + 1}`,
   aspect: 'wide',
   ...(item.type === 'video' ? { type: 'video' } : {}),

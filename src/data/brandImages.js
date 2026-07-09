@@ -29,7 +29,7 @@ const brandImageFiles = [
 
 export const brandImages = brandImageFiles.map((image) => ({
   src: assetPath(`portfolio/brand-campaign/${image.fileName}`),
-  previewSrc: assetPath(`portfolio/brand-campaign/${image.previewFileName}`),
+  previewSrc: assetPath(`portfolio/brand-campaign/light-previews/${image.previewFileName.split('/').pop().replace('.png', '.jpg')}`),
   alt: image.alt,
   aspect: 'long',
 }));
