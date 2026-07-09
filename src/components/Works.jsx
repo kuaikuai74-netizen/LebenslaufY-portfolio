@@ -96,7 +96,7 @@ function getThumbnailSrc(image) {
 }
 
 function getLightboxSrc(image) {
-  return image.displaySrc ?? image.src;
+  return image.src;
 }
 
 function CaseStudyOverlay({ caseStudy, onClose }) {
@@ -196,10 +196,10 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-moss sm:tracking-[0.34em]">
               {caseStudy.eyebrow}
             </p>
-            <h3 id="case-study-title" className="mt-4 whitespace-nowrap text-[2rem] font-light leading-tight text-ink sm:mt-5 sm:text-[2.65rem] xl:text-[3rem]">
+            <h3 id="case-study-title" className="mt-4 text-[1.8rem] font-light leading-tight text-ink sm:mt-5 sm:text-[2.25rem] xl:text-[2.25rem]">
               {caseStudy.title}
             </h3>
-            <p className="mt-5 border-l border-moss/50 pl-4 text-sm leading-7 text-sage sm:mt-8 sm:pl-6 sm:text-base sm:leading-8">
+            <p className="mt-5 border-l border-moss/50 pl-4 text-sm leading-7 text-sage sm:mt-7 sm:pl-5 sm:text-[0.95rem] sm:leading-7">
               {caseStudy.summary}
             </p>
           </div>
@@ -211,7 +211,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-moss">
                     {item.label}
                   </dt>
-                  <dd className="mt-2 text-sm leading-6 text-ink">{item.value}</dd>
+                  <dd className="mt-2 text-[0.82rem] leading-6 text-ink sm:text-sm">{item.value}</dd>
                 </div>
               ))}
             </dl>
@@ -224,7 +224,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   <h4 className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-moss">
                     {item.label}
                   </h4>
-                  <p className="mt-3 text-sm leading-7 text-sage">{item.value}</p>
+                  <p className="mt-3 text-[0.82rem] leading-6 text-sage sm:text-sm sm:leading-7">{item.value}</p>
                 </section>
               ))}
             </div>
@@ -232,7 +232,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
           <div className="mt-7 grid gap-3 sm:mt-10 sm:gap-4">
             {caseStudy.details.map((detail) => (
-              <p className="border-t border-line pt-3 text-sm leading-7 text-sage sm:pt-4" key={detail}>
+              <p className="border-t border-line pt-3 text-[0.82rem] leading-6 text-sage sm:pt-4 sm:text-sm sm:leading-7" key={detail}>
                 {detail}
               </p>
             ))}
@@ -262,7 +262,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                         : getPreviewClassName(image.aspect)
                     }
                     decoding="async"
-                    fetchPriority={index < 6 ? 'high' : 'auto'}
+                    fetchpriority={index < 6 ? 'high' : 'auto'}
                     loading={index < 6 ? 'eager' : 'lazy'}
                     src={getThumbnailSrc(image)}
                   />
@@ -438,7 +438,7 @@ export default function Works() {
             key={work.title}
           >
             <button
-              className="block w-full text-left"
+              className="block w-full text-left outline-none"
               type="button"
               onClick={() =>
                 work.caseStudy &&
