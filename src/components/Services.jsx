@@ -30,7 +30,7 @@ function ServiceProfileOverlay({ profile, onClose }) {
       aria-modal="true"
       aria-labelledby="resume-title"
     >
-      <div className="relative mx-auto grid max-h-[calc(100vh-3rem)] max-w-5xl overflow-hidden rounded-[1.25rem] border border-white/50 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.26)] sm:max-h-[calc(100vh-5rem)] sm:rounded-[2rem] lg:grid-cols-[0.34fr_0.66fr]">
+      <div className="relative mx-auto grid max-h-[calc(100vh-3rem)] max-w-5xl overflow-hidden rounded-[1.25rem] border border-white/50 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.26)] sm:max-h-[calc(100vh-5rem)] sm:rounded-[2rem] lg:h-[calc(100vh-5rem)] lg:min-h-0 lg:grid-cols-[0.34fr_0.66fr]">
         <button
           className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full border border-line bg-white/90 text-2xl font-light text-ink shadow-card transition hover:bg-ink hover:text-white sm:right-6 sm:top-6"
           type="button"
@@ -56,7 +56,7 @@ function ServiceProfileOverlay({ profile, onClose }) {
           <div className="mt-8 h-px w-20 bg-sage/35" />
         </aside>
 
-        <div className="relative flex min-h-0 flex-col overflow-y-auto p-7 pt-16 sm:p-9 sm:pt-20 lg:p-10 lg:pt-16">
+        <div className="relative flex min-h-0 flex-col overflow-y-auto p-7 pt-16 sm:p-9 sm:pt-20 lg:h-full lg:p-10 lg:pt-16">
           <div className="space-y-6">
             {profile.sections.map((section) => (
               <section className="border-t border-line pt-5" key={section.label}>

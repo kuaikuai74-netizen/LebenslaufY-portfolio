@@ -1,7 +1,20 @@
+import { useState } from 'react';
 import { contact, profile } from '../data/portfolio';
 import Cubes from './Cubes';
 
 export default function Contact() {
+  const [isEmailVisible, setIsEmailVisible] = useState(false);
+  const [copyStatus, setCopyStatus] = useState('');
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopyStatus('已复制');
+    } catch {
+      setCopyStatus('请手动复制');
+    }
+  };
+
   return (
     <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10" id="contact">
       <div className="brand-board relative overflow-hidden border border-line p-8 shadow-card sm:p-12 lg:p-16">
@@ -42,12 +55,16 @@ export default function Contact() {
             </div>
           </div>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <a
+            <button
               className="rounded-full bg-ink px-7 py-4 text-center text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-sage"
-              href={`mailto:${profile.email}`}
+              type="button"
+              onClick={() => {
+                setIsEmailVisible(true);
+                setCopyStatus('');
+              }}
             >
               {contact.emailCta}
-            </a>
+            </button>
             <a
               className="rounded-full border border-line bg-white/60 px-7 py-4 text-center text-sm font-semibold text-ink transition hover:-translate-y-0.5 hover:bg-mist"
               href={`tel:${profile.phone}`}
@@ -55,6 +72,21 @@ export default function Contact() {
               {contact.phoneCta}
             </a>
           </div>
+
+          {isEmailVisible && (
+            <div className="mt-5 flex flex-col gap-3 border border-line bg-white/70 p-4 sm:max-w-xl sm:flex-row sm:items-center sm:justify-between">
+              <p className="select-all break-all text-sm font-semibold text-ink">
+                {profile.email}
+              </p>
+              <button
+                className="w-fit border border-ink bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:-translate-y-0.5 hover:bg-white hover:text-ink"
+                type="button"
+                onClick={handleCopyEmail}
+              >
+                {copyStatus || '复制邮箱'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
