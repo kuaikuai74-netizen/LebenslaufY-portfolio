@@ -3,6 +3,34 @@ import { createPortal } from 'react-dom';
 import SectionHeader from './SectionHeader';
 import { works } from '../data/portfolio';
 
+function ImageWithStatus({ alt, className, src, ...props }) {
+  const [status, setStatus] = useState('loading');
+
+  useEffect(() => {
+    setStatus('loading');
+  }, [src]);
+
+  return (
+    <span className="relative block h-full w-full">
+      <img
+        alt={alt}
+        className={`${className} transition-opacity duration-300 ${
+          status === 'loaded' ? 'opacity-100' : 'opacity-0'
+        }`}
+        src={src}
+        onError={() => setStatus('error')}
+        onLoad={() => setStatus('loaded')}
+        {...props}
+      />
+      {status !== 'loaded' && (
+        <span className="absolute inset-0 grid place-items-center bg-white px-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-sage">
+          {status === 'error' ? 'Image unavailable' : 'Loading image'}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function PlaceholderArtwork({ index }) {
   const variants = ['soft-photo', 'bg-mist', 'wave-card', 'bg-white'];
 
@@ -67,13 +95,17 @@ function getThumbnailSrc(image) {
   return image.displaySrc ?? image.previewSrc ?? image.src;
 }
 
+function getLightboxSrc(image) {
+  return image.displaySrc ?? image.src;
+}
+
 function CaseStudyOverlay({ caseStudy, onClose }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const lightboxScrollRef = useRef(null);
   const lightboxImage =
     lightboxIndex === null ? null : caseStudy.images[lightboxIndex];
   const isLightboxVideo = lightboxImage?.type === 'video';
-  const lightboxMediaSrc = lightboxImage?.src;
+  const lightboxMediaSrc = lightboxImage ? getLightboxSrc(lightboxImage) : undefined;
   const caseNumber = String(caseStudy.caseNumber ?? 1).padStart(2, '0');
   const isLongPreviewLayout = caseStudy.displayMode === 'long-preview';
   const showPreviousImage = () => {
@@ -140,8 +172,8 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
       aria-modal="true"
       aria-labelledby="case-study-title"
     >
-      <div className="mx-auto flex min-h-full max-w-7xl flex-col overflow-hidden rounded-[1.25rem] border border-white/40 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.32)] sm:rounded-[2rem] lg:grid lg:h-full lg:grid-cols-[1.22fr_0.78fr]">
-        <div className="relative order-1 flex min-h-0 flex-col bg-white/82 p-5 sm:p-10 lg:order-2 lg:p-12">
+      <div className="mx-auto flex min-h-full max-w-7xl flex-col overflow-hidden rounded-[1.25rem] border border-white/40 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.32)] sm:rounded-[2rem] lg:grid lg:h-[calc(100vh-3rem)] lg:min-h-0 lg:grid-cols-[1.22fr_0.78fr]">
+        <div className="relative order-1 flex min-h-0 flex-col overflow-y-auto bg-white/82 p-5 sm:p-10 lg:order-2 lg:p-12">
           <button
             className={`fixed right-5 top-5 z-[85] h-11 w-11 place-items-center rounded-full border border-line bg-paper text-2xl font-light text-sage shadow-card transition hover:bg-ink hover:text-white sm:absolute sm:right-6 sm:top-6 sm:h-12 sm:w-12 ${
               lightboxImage ? 'hidden' : 'grid'
@@ -202,7 +234,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
             ))}
           </div>
 
-          <div className="mt-8 border-t border-line pt-5 text-xs font-semibold uppercase tracking-[0.24em] text-sage sm:tracking-[0.28em] lg:mt-auto lg:pt-8">
+          <div className="mt-8 border-t border-line pt-5 text-xs font-semibold uppercase tracking-[0.24em] text-sage sm:tracking-[0.28em] lg:pt-8">
             Scroll images
           </div>
         </div>
@@ -227,7 +259,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                       src={image.src}
                     />
                   ) : (
-                    <img
+                    <ImageWithStatus
                       alt={image.alt}
                       className={
                         isLongPreviewLayout
@@ -252,7 +284,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
             className="absolute inset-0 cursor-zoom-out"
             type="button"
             onClick={() => setLightboxIndex(null)}
-            aria-label="关闭原图预览"
+            aria-label="关闭原图预览背景"
           />
           <div className="pointer-events-none absolute inset-0 opacity-12 placeholder-grid" />
 
@@ -289,7 +321,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                       src={image.src}
                     />
                   ) : (
-                    <img
+                    <ImageWithStatus
                       alt=""
                       className="h-full w-full object-cover"
                       decoding="async"
@@ -313,7 +345,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                       src={lightboxMediaSrc}
                     />
                   ) : (
-                    <img
+                    <ImageWithStatus
                       alt={lightboxImage.alt}
                       className={getLightboxMediaClassName(lightboxImage.aspect)}
                       decoding="async"
