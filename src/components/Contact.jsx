@@ -3,12 +3,16 @@ import { contact, profile } from '../data/portfolio';
 import Cubes from './Cubes';
 
 export default function Contact() {
-  const [isEmailVisible, setIsEmailVisible] = useState(false);
+  const [activeContact, setActiveContact] = useState(null);
   const [copyStatus, setCopyStatus] = useState('');
+  const activeContactInfo =
+    activeContact === 'phone'
+      ? { value: profile.phone, copyLabel: '复制电话' }
+      : { value: profile.email, copyLabel: '复制邮箱' };
 
-  const handleCopyEmail = async () => {
+  const handleCopyContact = async () => {
     try {
-      await navigator.clipboard.writeText(profile.email);
+      await navigator.clipboard.writeText(activeContactInfo.value);
       setCopyStatus('已复制');
     } catch {
       setCopyStatus('请手动复制');
@@ -56,34 +60,46 @@ export default function Contact() {
           </div>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <button
-              className="rounded-full bg-ink px-7 py-4 text-center text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-sage"
+              className={`rounded-full px-7 py-4 text-center text-sm font-semibold transition hover:-translate-y-0.5 ${
+                activeContact === 'email'
+                  ? 'bg-ink text-white hover:bg-sage'
+                  : 'border border-line bg-white/60 text-ink hover:bg-mist'
+              }`}
               type="button"
               onClick={() => {
-                setIsEmailVisible(true);
+                setActiveContact('email');
                 setCopyStatus('');
               }}
             >
               {contact.emailCta}
             </button>
-            <a
-              className="rounded-full border border-line bg-white/60 px-7 py-4 text-center text-sm font-semibold text-ink transition hover:-translate-y-0.5 hover:bg-mist"
-              href={`tel:${profile.phone}`}
+            <button
+              className={`rounded-full px-7 py-4 text-center text-sm font-semibold transition hover:-translate-y-0.5 ${
+                activeContact === 'phone'
+                  ? 'bg-ink text-white hover:bg-sage'
+                  : 'border border-line bg-white/60 text-ink hover:bg-mist'
+              }`}
+              type="button"
+              onClick={() => {
+                setActiveContact('phone');
+                setCopyStatus('');
+              }}
             >
               {contact.phoneCta}
-            </a>
+            </button>
           </div>
 
-          {isEmailVisible && (
+          {activeContact && (
             <div className="mt-5 flex flex-col gap-3 border border-line bg-white/70 p-4 sm:max-w-xl sm:flex-row sm:items-center sm:justify-between">
               <p className="select-all break-all text-sm font-semibold text-ink">
-                {profile.email}
+                {activeContactInfo.value}
               </p>
               <button
                 className="w-fit border border-ink bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:-translate-y-0.5 hover:bg-white hover:text-ink"
                 type="button"
-                onClick={handleCopyEmail}
+                onClick={handleCopyContact}
               >
-                {copyStatus || '复制邮箱'}
+                {copyStatus || activeContactInfo.copyLabel}
               </button>
             </div>
           )}

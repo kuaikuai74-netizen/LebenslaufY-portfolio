@@ -1,21 +1,49 @@
-# Personal Portfolio
+# LebenslaufY Portfolio
 
-This is a basic version of a personal portfolio website built on React + Vite, targeted at visual designers, AI designers, and brand designers.
+React + Vite + Tailwind CSS single-page portfolio for an AIGC visual designer. The site includes a private access screen, hero section, profile summary, selected works, case-study overlays, image/video lightbox, resume sections, skills, and contact CTA.
 
-## Startup method
+## Run Locally
 
-```bashnpm installnpm run dev```
+```bash
+npm install
+npm run dev
+```
 
-The default development address is usually `http://localhost:5173`.
+The Vite dev server usually runs at `http://localhost:5173/`. On Windows PowerShell, if `npm` is blocked by execution policy, run:
 
-## Directory Structure
+```bash
+npm.cmd run dev
+npm.cmd run build
+```
 
-- `src/App.jsx`: Page structure and content data - `src/styles.css`: Site-wide visual design, layout, and animations - `src/main.jsx`: React entry point - `public/`: Static resources, including placeholder images for works and avatar images
+## Build
 
-## Current version includes
+```bash
+npm run build
+```
 
-- Full-screen Hero section, featuring a video background, navigation bar, large headline, and contact button - Personal Experience module, including a portrait, introduction, contact information, and data card - Featured Projects module, showcasing project covers in large cards - Personal Strengths module, displaying competency tags - Full-screen contact page at the bottom
+The production build is generated in `dist/`.
 
-## Further optimization can be continued in the future
+## Project Structure
 
-- Replace with your real resume content - Include real work screenshots and project covers - Replace the Hero background video with your official material - Continue to refine the visual details based on the reference website you provided
+- `src/App.jsx`: Main page composition and lock-screen gate.
+- `src/data/portfolio.js`: Main editable content for navigation, profile, works, resume, skills, and contact.
+- `src/data/*.js`: Image and media lists used by case studies.
+- `src/components/`: Page sections and interactive UI components.
+- `src/styles.css`: Global visual styling, layout helpers, and animations.
+- `public/`: Static portfolio images, videos, SVG covers, favicon, and share assets.
+
+## Current Features
+
+- Password-gated portfolio entry screen.
+- Hero section with interactive visual elements.
+- About, works, resume/services, skills, and contact sections.
+- Four selected work categories with full-screen case-study overlays.
+- Image and video preview lightbox with thumbnails, keyboard navigation, and mobile layout support.
+- Basic SEO, favicon, Open Graph metadata, and GitHub Pages base-path support.
+
+## Development Notes
+
+- Website copy and case-study data are read from `src/data/portfolio.js`.
+- `CONTENT.md` is a writing reference only; it does not automatically sync to the site.
+- Static assets should be placed under `public/` and referenced with `assetPath()` when used from data files.

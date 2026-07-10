@@ -1,7 +1,7 @@
 # AI Portfolio 网站文案
 
 这个文件用于集中修改网站文字内容。  
-修改后如果需要同步到网页，请把对应内容更新到 `/Users/jintanfuren/Documents/jianli/src/data/portfolio.js`。
+修改后如果需要同步到网页，请把对应内容更新到 `src/data/portfolio.js`。
 
 ## 导航
 
@@ -19,7 +19,7 @@
 
 职业定位：AIGC 设计师 / AI 视觉设计师
 
-邮箱：yourname@email.com
+邮箱：kuaikuai74@outlook.com
 
 电话：15058475217
 
