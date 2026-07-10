@@ -70,6 +70,84 @@ function ProgressiveImage({ alt, className, previewSrc, src, ...props }) {
   );
 }
 
+function StableLightboxMedia({ image, mediaSrc }) {
+  const [displayedImage, setDisplayedImage] = useState(image);
+  const [displayedMediaSrc, setDisplayedMediaSrc] = useState(mediaSrc);
+  const [pendingImage, setPendingImage] = useState(null);
+  const pendingMediaSrc = pendingImage ? getLightboxSrc(pendingImage) : undefined;
+  const displayedIsVideo = displayedImage?.type === 'video';
+  const pendingIsVideo = pendingImage?.type === 'video';
+
+  useEffect(() => {
+    if (!image || image.src === displayedImage?.src) {
+      return;
+    }
+
+    setPendingImage(image);
+  }, [displayedImage?.src, image, mediaSrc]);
+
+  if (!displayedImage) {
+    return null;
+  }
+
+  const confirmPendingImage = () => {
+    if (!pendingImage || !pendingMediaSrc) {
+      return;
+    }
+
+    setDisplayedImage(pendingImage);
+    setDisplayedMediaSrc(pendingMediaSrc);
+    setPendingImage(null);
+  };
+
+  return (
+    <div className="relative flex min-h-full justify-center">
+      {displayedIsVideo ? (
+        <video
+          aria-label={displayedImage.alt}
+          className={getLightboxMediaClassName(displayedImage.aspect)}
+          controls
+          playsInline
+          poster={getThumbnailSrc(displayedImage)}
+          preload="metadata"
+          src={displayedMediaSrc}
+        />
+      ) : (
+        <ProgressiveImage
+          alt={displayedImage.alt}
+          className={getLightboxMediaClassName(displayedImage.aspect)}
+          decoding="async"
+          loading="eager"
+          previewSrc={getThumbnailSrc(displayedImage)}
+          src={displayedMediaSrc}
+        />
+      )}
+      {pendingImage && !pendingIsVideo && (
+        <img
+          alt=""
+          className="pointer-events-none absolute h-px w-px opacity-0"
+          decoding="async"
+          src={pendingMediaSrc}
+          onError={confirmPendingImage}
+          onLoad={confirmPendingImage}
+        />
+      )}
+      {pendingImage && pendingIsVideo && (
+        <video
+          aria-hidden="true"
+          className="pointer-events-none absolute h-px w-px opacity-0"
+          muted
+          poster={getThumbnailSrc(pendingImage)}
+          preload="metadata"
+          src={pendingMediaSrc}
+          onError={confirmPendingImage}
+          onLoadedMetadata={confirmPendingImage}
+        />
+      )}
+    </div>
+  );
+}
+
 function PlaceholderArtwork({ index }) {
   const variants = ['soft-photo', 'bg-mist', 'wave-card', 'bg-white'];
 
@@ -162,7 +240,6 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
   const lightboxScrollRef = useRef(null);
   const lightboxImage =
     lightboxIndex === null ? null : caseStudy.images[lightboxIndex];
-  const isLightboxVideo = lightboxImage?.type === 'video';
   const lightboxMediaSrc = lightboxImage ? getLightboxSrc(lightboxImage) : undefined;
   const visibleImages = caseStudy.images.slice(0, visibleMediaCount);
   const lightboxThumbnails = getLightboxThumbnails(caseStudy.images, lightboxIndex);
@@ -403,28 +480,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
             <div className="relative min-h-0 bg-white">
               <div ref={lightboxScrollRef} className="h-full overflow-auto overscroll-contain p-3 sm:p-5">
-                <div className="flex min-h-full justify-center">
-                  {isLightboxVideo ? (
-                    <video
-                      aria-label={lightboxImage.alt}
-                      className={getLightboxMediaClassName(lightboxImage.aspect)}
-                      controls
-                      playsInline
-                      poster={getThumbnailSrc(lightboxImage)}
-                      preload="metadata"
-                      src={lightboxMediaSrc}
-                    />
-                  ) : (
-                    <ProgressiveImage
-                      alt={lightboxImage.alt}
-                      className={getLightboxMediaClassName(lightboxImage.aspect)}
-                      decoding="async"
-                      loading="eager"
-                      previewSrc={getThumbnailSrc(lightboxImage)}
-                      src={lightboxMediaSrc}
-                    />
-                  )}
-                </div>
+                <StableLightboxMedia image={lightboxImage} mediaSrc={lightboxMediaSrc} />
               </div>
 
               <button
