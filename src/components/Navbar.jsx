@@ -80,10 +80,13 @@ export default function Navbar() {
     };
   }, []);
 
-  const handleNavigationClick = (href) => {
+  const handleNavigationClick = (event, href) => {
+    event.preventDefault();
     lockedHrefRef.current = href;
     activeHrefRef.current = href;
     setActiveHref(href);
+    window.history.pushState(null, '', href);
+    document.querySelector(href)?.scrollIntoView({ block: 'start' });
     window.clearTimeout(lockTimeoutRef.current);
     lockTimeoutRef.current = window.setTimeout(() => {
       lockedHrefRef.current = null;
@@ -124,7 +127,7 @@ export default function Navbar() {
               }`}
               href={item.href}
               key={item.href}
-              onClick={() => handleNavigationClick(item.href)}
+              onClick={(event) => handleNavigationClick(event, item.href)}
             >
               {item.label}
             </a>

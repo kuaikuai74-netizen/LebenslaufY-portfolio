@@ -5,7 +5,7 @@ import ToolLogoStack from './ToolLogoStack';
 
 export default function Hero() {
   return (
-    <section className="relative mx-auto max-w-7xl px-5 pb-14 pt-24 sm:min-h-screen sm:px-8 sm:pb-20 sm:pt-28 lg:px-10" id="top">
+    <section className="relative mx-auto max-w-7xl px-5 pb-14 pt-5 sm:min-h-screen sm:px-8 sm:pb-20 sm:pt-8 lg:px-10" id="top">
       <div className="grid overflow-hidden border border-line bg-white/82 shadow-card lg:min-h-[calc(100vh-8rem)] lg:grid-cols-[0.82fr_1.18fr]">
         <div className="relative min-h-[300px] border-b border-line bg-[#fbfcf7] sm:min-h-[470px] lg:min-h-[420px] lg:border-b-0 lg:border-r">
           <div className="absolute inset-0 opacity-[0.06] mix-blend-multiply grayscale saturate-0 contrast-75">
