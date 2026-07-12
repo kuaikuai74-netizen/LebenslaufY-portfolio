@@ -20,7 +20,7 @@ export const profile = {
   phone: '15058475217',
   location: '杭州萧山',
   summary:
-    '拥有6年视觉设计深耕经验，2年跨境电商视觉团队管理经验，兼具实操能力与统筹管理思维，擅长将AIGC工具、商业视觉判断与团队工作流结合，快速把创意转化为可落地的图像、视频与数字内容。带领团队输出符合品牌调性的视觉作品，又能站在业务视角判断设计的实际价值，同时通过流程和规范确保方案高效落地，这也是我理解的视觉管理岗位需要的核心能力。',
+    '设计、业务、落地三点综合把控：可统筹团队打造契合品牌调性的视觉产出，擅长从业务目标出发衡量设计商业价值，同时搭建标准化流程规范，保障所有设计方案高效落地执行。\n适配岗位：AIGC设计师/视觉设计师/视觉主管/视觉经理',
 };
 
 export const hero = {
@@ -35,9 +35,9 @@ export const hero = {
 
 export const stats = [
   { value: '6+', label: '年视觉设计经验' },
-  { value: '13', label: '人视觉团队管理' },
+  { value: '14', label: '人视觉团队管理' },
   { value: '35%', label: '交付效率提升' },
-  { value: '20+', label: '视觉项目' },
+  { value: '20+', label: '个人视觉项目' },
 ];
 
 export const about = {
@@ -45,7 +45,7 @@ export const about = {
   title: '应蓉芬',
   description: 'Think Clearly.\nDesign Simply.\nBuild Meaningfully.',
   body:
-    '精通 PS、AI 设计软件，熟练运用 AIGC 提效赋能，运用 API 节点调用各大国内外模型（Nano Banana 2 / Image 2.0 / Veo 3.1 / Seedance 2.0 / Kling 3.0）进行逻辑与长文本梳理以及生图。',
+    '精通PS、AI等各类设计软件，熟练运用AIGC提效赋能，运用API节点调用各大国内外模型（Nano Banana 2 / Image 2.0 / Veo 3.1 / Seedance 2.0 / Kling 3.0）进行逻辑与长文本梳理以及生图，深谙欧美审美及海外本土化视觉逻辑。',
   highlights: [
     '深谙欧美审美及海外本土化视觉逻辑',
     '擅长融合视觉美学与营销诉求，兼顾品牌调性与业务转化',
@@ -325,12 +325,7 @@ export const serviceProfiles = {
       {
         label: '基础信息',
         body:
-          '1997.09，浙江宁波，现居杭州萧山。求职意向：视觉设计经理 / 主管。',
-      },
-      {
-        label: '作品链接',
-        body:
-          '站酷主页：https://www.zcool.com.cn/u/28852059。可结合网页作品集继续展示视觉优化提升、跨境电商可视化模型、专业技能培训和品牌曝光推广项目。',
+          '1997.09，浙江宁波，现居杭州萧山。适配岗位：视觉设计师/视觉经理/视觉主管。',
       },
     ],
   },

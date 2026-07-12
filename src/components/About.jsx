@@ -68,7 +68,7 @@ export default function About() {
               </span>
             </div>
 
-            <p className="max-w-3xl text-lg font-light leading-9 text-ink sm:text-xl">
+            <p className="max-w-3xl text-base font-light leading-8 text-ink sm:text-lg sm:leading-9">
               {about.body}
             </p>
 

@@ -88,7 +88,7 @@ export default function Hero() {
 
           <div className="relative z-10 rounded-2xl border border-line bg-paper/80 p-4 sm:rounded-3xl sm:p-5">
             <p className="text-sm font-semibold text-ink">{profile.name}</p>
-            <p className="mt-2 max-h-28 overflow-hidden text-xs leading-6 text-sage sm:max-h-none sm:text-[0.82rem]">{profile.summary}</p>
+            <p className="mt-2 max-h-28 overflow-hidden whitespace-pre-line text-xs leading-6 text-sage sm:max-h-none sm:text-[0.82rem]">{profile.summary}</p>
           </div>
         </div>
       </div>
