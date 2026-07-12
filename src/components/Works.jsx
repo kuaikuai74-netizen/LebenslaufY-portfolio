@@ -5,13 +5,19 @@ import { works } from '../data/portfolio';
 
 const INITIAL_VISIBLE_MEDIA_COUNT = 24;
 const LIGHTBOX_THUMBNAIL_RADIUS = 10;
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function getFocusableElements(container) {
+  return [...container.querySelectorAll(FOCUSABLE_SELECTOR)].filter(
+    (element) => element.getClientRects().length > 0 && !element.closest('[inert]'),
+  );
+}
 
 function ImageWithStatus({ alt, className, src, ...props }) {
-  const [status, setStatus] = useState('loading');
-
-  useEffect(() => {
-    setStatus('loading');
-  }, [src]);
+  const [loadedSrc, setLoadedSrc] = useState(null);
+  const [errorSrc, setErrorSrc] = useState(null);
+  const status = loadedSrc === src ? 'loaded' : errorSrc === src ? 'error' : 'loading';
 
   return (
     <span className="relative block h-full w-full">
@@ -21,8 +27,8 @@ function ImageWithStatus({ alt, className, src, ...props }) {
           status === 'loaded' ? 'opacity-100' : 'opacity-0'
         }`}
         src={src}
-        onError={() => setStatus('error')}
-        onLoad={() => setStatus('loaded')}
+        onError={() => setErrorSrc(src)}
+        onLoad={() => setLoadedSrc(src)}
         {...props}
       />
       {status !== 'loaded' && (
@@ -35,13 +41,10 @@ function ImageWithStatus({ alt, className, src, ...props }) {
 }
 
 function ProgressiveImage({ alt, className, previewSrc, src, ...props }) {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [loadedSrc, setLoadedSrc] = useState(null);
+  const isLoaded = loadedSrc === src;
   const lowQualitySrc = previewSrc && previewSrc !== src ? previewSrc : null;
   const imageClassName = className.replace(/(?:^|\s)(?:w-\S+|max-w-\S+|max-h-\S+)(?=\s|$)/g, '').trim();
-
-  useEffect(() => {
-    setIsLoaded(false);
-  }, [src]);
 
   if (!lowQualitySrc) {
     return <ImageWithStatus alt={alt} className={className} src={src} {...props} />;
@@ -63,7 +66,7 @@ function ProgressiveImage({ alt, className, previewSrc, src, ...props }) {
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         src={src}
-        onLoad={() => setIsLoaded(true)}
+        onLoad={() => setLoadedSrc(src)}
         {...props}
       />
     </span>
@@ -105,7 +108,7 @@ function StableLightboxMedia({ image, mediaSrc }) {
       {displayedIsVideo ? (
         <video
           aria-label={displayedImage.alt}
-          className={getLightboxMediaClassName(displayedImage.aspect)}
+          className={getLightboxMediaClassName(displayedImage.aspect, true)}
           controls
           playsInline
           poster={getThumbnailSrc(displayedImage)}
@@ -167,8 +170,16 @@ function PlaceholderArtwork({ index }) {
 
 function WorkCover({ work, index }) {
   if (work.cover) {
+    const isWideLayout = work.layout === 'wide';
+
     return (
-      <div className="relative aspect-[4/3] overflow-hidden bg-mist">
+      <div
+        className={`relative overflow-hidden bg-mist ${
+          isWideLayout
+            ? 'aspect-video md:h-[18rem] md:aspect-auto'
+            : 'aspect-video'
+        }`}
+      >
         <img
           alt={work.cover.alt}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
@@ -194,8 +205,12 @@ function getPreviewClassName(aspect) {
   }`;
 }
 
-function getLightboxMediaClassName(aspect) {
+function getLightboxMediaClassName(aspect, isVideo = false) {
   const baseClassName = 'bg-white object-contain';
+
+  if (isVideo) {
+    return `${baseClassName} max-h-[calc(92vh-4rem)] w-auto max-w-full sm:max-h-[calc(92vh-5rem)] md:max-w-[31.25rem]`;
+  }
 
   if (aspect === 'long') {
     return `${baseClassName} w-[min(100%,56rem)]`;
@@ -237,6 +252,11 @@ function getLightboxThumbnails(images, activeIndex) {
 function CaseStudyOverlay({ caseStudy, onClose }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [visibleMediaCount, setVisibleMediaCount] = useState(INITIAL_VISIBLE_MEDIA_COUNT);
+  const overlayRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const lightboxRef = useRef(null);
+  const lightboxCloseButtonRef = useRef(null);
+  const lightboxTriggerRef = useRef(null);
   const lightboxScrollRef = useRef(null);
   const lightboxImage =
     lightboxIndex === null ? null : caseStudy.images[lightboxIndex];
@@ -246,6 +266,7 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
   const canLoadMoreImages = visibleMediaCount < caseStudy.images.length;
   const caseNumber = String(caseStudy.caseNumber ?? 1).padStart(2, '0');
   const isLongPreviewLayout = caseStudy.displayMode === 'long-preview';
+  const isCompactPreviewLayout = caseStudy.displayMode === 'compact-preview';
   const showPreviousImage = () => {
     setLightboxIndex((currentIndex) =>
       currentIndex === null
@@ -257,6 +278,10 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
     setLightboxIndex((currentIndex) =>
       currentIndex === null ? currentIndex : (currentIndex + 1) % caseStudy.images.length,
     );
+  };
+  const closeLightbox = () => {
+    setLightboxIndex(null);
+    window.requestAnimationFrame(() => lightboxTriggerRef.current?.focus());
   };
 
   useEffect(() => {
@@ -270,12 +295,51 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
+    const appRoot = document.getElementById('root');
+    const originalRootInert = appRoot?.hasAttribute('inert') ?? false;
+    const originalRootAriaHidden = appRoot?.getAttribute('aria-hidden');
+    const previouslyFocusedElement = document.activeElement;
     document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+
+    if (appRoot) {
+      appRoot.setAttribute('inert', '');
+      appRoot.setAttribute('aria-hidden', 'true');
+    }
 
     return () => {
       document.body.style.overflow = originalOverflow;
+
+      if (appRoot) {
+        if (originalRootInert) {
+          appRoot.setAttribute('inert', '');
+        } else {
+          appRoot.removeAttribute('inert');
+        }
+        if (originalRootAriaHidden === null) {
+          appRoot.removeAttribute('aria-hidden');
+        } else {
+          appRoot.setAttribute('aria-hidden', originalRootAriaHidden);
+        }
+      }
+
+      previouslyFocusedElement?.focus?.();
     };
   }, []);
+
+  useEffect(() => {
+    if (overlayRef.current) {
+      if (lightboxIndex === null) {
+        overlayRef.current.removeAttribute('inert');
+      } else {
+        overlayRef.current.setAttribute('inert', '');
+      }
+    }
+
+    if (lightboxIndex !== null) {
+      lightboxCloseButtonRef.current?.focus();
+    }
+  }, [lightboxIndex]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -284,7 +348,32 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
         if (lightboxIndex === null) {
           onClose();
         } else {
-          setLightboxIndex(null);
+          closeLightbox();
+        }
+      }
+
+      if (event.key === 'Tab') {
+        const activeDialog =
+          lightboxIndex === null ? overlayRef.current : lightboxRef.current;
+        const focusableElements = activeDialog
+          ? getFocusableElements(activeDialog)
+          : [];
+
+        if (focusableElements.length === 0) {
+          event.preventDefault();
+          activeDialog?.focus();
+          return;
+        }
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
         }
       }
 
@@ -310,14 +399,17 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
 
   return (
     <div
+      ref={overlayRef}
       className="fixed inset-0 z-[80] overflow-y-auto bg-ink/68 px-3 py-3 backdrop-blur-md sm:px-6 sm:py-6 lg:px-10"
       role="dialog"
       aria-modal="true"
       aria-labelledby="case-study-title"
+      tabIndex={-1}
     >
       <div className="mx-auto flex min-h-full max-w-7xl flex-col overflow-hidden rounded-[1.25rem] border border-white/40 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.32)] sm:rounded-[2rem] lg:grid lg:h-[calc(100vh-3rem)] lg:min-h-0 lg:grid-cols-[1.22fr_0.78fr]">
         <div className="relative order-1 flex min-h-0 flex-col overflow-y-auto bg-white/82 p-5 sm:p-10 lg:order-2 lg:p-12">
           <button
+            ref={closeButtonRef}
             className={`fixed right-5 top-5 z-[85] h-11 w-11 place-items-center rounded-full border border-line bg-paper text-2xl font-light text-sage shadow-card transition hover:bg-ink hover:text-white sm:absolute sm:right-6 sm:top-6 sm:h-12 sm:w-12 ${
               lightboxImage ? 'hidden' : 'grid'
             }`}
@@ -390,7 +482,10 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   className="group block w-full overflow-hidden rounded-[1.25rem] border border-line bg-white text-left shadow-card"
                   key={image.src}
                   type="button"
-                  onClick={() => setLightboxIndex(index)}
+                  onClick={(event) => {
+                    lightboxTriggerRef.current = event.currentTarget;
+                    setLightboxIndex(index);
+                  }}
                   aria-label={`打开原图 ${index + 1}`}
                 >
                   <ImageWithStatus
@@ -398,12 +493,19 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                     className={
                       isLongPreviewLayout
                         ? 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]'
+                        : isCompactPreviewLayout
+                          ? 'aspect-[2.35/1] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]'
                         : getPreviewClassName(image.aspect)
                     }
                     decoding="async"
                     fetchpriority={index < 6 ? 'high' : 'auto'}
                     loading={index < 6 ? 'eager' : 'lazy'}
                     src={getThumbnailSrc(image)}
+                    style={
+                      isCompactPreviewLayout && image.thumbnailPosition
+                        ? { objectPosition: image.thumbnailPosition }
+                        : undefined
+                    }
                   />
                 </button>
               ))}
@@ -428,20 +530,28 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
       </div>
 
       {lightboxImage && createPortal(
-        <div className="fixed inset-0 z-[90] grid place-items-center bg-ink/78 p-3 sm:p-4">
+        <div
+          ref={lightboxRef}
+          className="fixed inset-0 z-[90] grid place-items-center bg-ink/78 p-3 sm:p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`原图预览 ${lightboxIndex + 1} / ${caseStudy.images.length}`}
+          tabIndex={-1}
+        >
           <button
             className="absolute inset-0 cursor-zoom-out"
             type="button"
-            onClick={() => setLightboxIndex(null)}
+            onClick={closeLightbox}
             aria-label="关闭原图预览背景"
           />
           <div className="pointer-events-none absolute inset-0 opacity-12 placeholder-grid" />
 
           <div className="relative z-10 grid h-[92vh] w-full max-w-7xl overflow-hidden border border-white/35 bg-paper md:grid-cols-[4.5rem_1fr_16rem] xl:grid-cols-[5rem_1fr_21rem]">
             <button
+              ref={lightboxCloseButtonRef}
               className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full border border-line bg-white/88 text-2xl font-light text-ink shadow-card transition hover:bg-ink hover:text-white sm:right-5 sm:top-5 sm:h-12 sm:w-12"
               type="button"
-              onClick={() => setLightboxIndex(null)}
+              onClick={closeLightbox}
               aria-label="关闭原图预览"
             >
               ×
@@ -566,11 +676,17 @@ export default function Works() {
       <div className="grid gap-6 md:grid-cols-2">
         {works.map((work, index) => (
           <article
-            className="group border border-line bg-white/58 p-4 transition duration-300 hover:-translate-y-2 hover:shadow-card"
+            className={`group overflow-hidden border border-line bg-white/58 p-4 transition duration-300 hover:-translate-y-2 hover:shadow-card ${
+              work.layout === 'wide'
+                ? 'md:col-span-2 md:grid md:grid-cols-[1.2fr_0.8fr]'
+                : ''
+            }`}
             key={work.title}
           >
             <button
-              className="block w-full text-left outline-none"
+              className={`block w-full text-left outline-none ${
+                work.layout === 'wide' ? 'md:h-[18rem]' : ''
+              }`}
               type="button"
               onClick={() =>
                 work.caseStudy &&
@@ -580,7 +696,13 @@ export default function Works() {
             >
               <WorkCover work={work} index={index} />
             </button>
-            <div className="border-t border-line p-4 pt-6">
+            <div
+              className={`min-w-0 border-t border-line p-4 pt-6 ${
+                work.layout === 'wide'
+                  ? 'md:flex md:flex-col md:justify-center md:border-l md:border-t-0 md:p-8'
+                  : ''
+              }`}
+            >
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-moss">
                 {work.tag}
               </p>

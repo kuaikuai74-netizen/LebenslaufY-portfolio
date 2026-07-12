@@ -1,6 +1,7 @@
 import { aplusLongImages } from './aplusLongImages.js';
 import { brandImages } from './brandImages.js';
 import { motionMedia } from './motionMedia.js';
+import { otherMedia } from './otherMedia.js';
 import { productMainImages } from './productMainImages.js';
 import { assetPath } from './assetPath.js';
 
@@ -189,6 +190,42 @@ export const works = [
       ],
       displayMode: 'long-preview',
       images: brandImages,
+    },
+  },
+  {
+    title: '其他',
+    tag: 'Other Works / Experiments',
+    layout: 'wide',
+    description:
+      '收录 Logo 设计、可视化模型与动态实验，展示不同媒介和创作方向下的视觉探索。',
+    cover: {
+      src: assetPath('portfolio/covers/other-works.svg'),
+      alt: '其他作品海报封面',
+    },
+    caseStudy: {
+      eyebrow: 'Other Works',
+      title: '其他',
+      displayMode: 'compact-preview',
+      summary:
+        '集中展示 Logo 设计与可视化模型动态实验，补充电商视觉、品牌物料之外的创作实践。',
+      meta: [
+        { label: '内容', value: 'Logo 设计 / 可视化模型' },
+        { label: '形式', value: '静态图形 / 动态视频' },
+        { label: '产出', value: '1 张设计图 / 6 段动态作品' },
+      ],
+      structure: [
+        { label: '内容范围', value: '整理不属于现有四个作品分类的视觉设计与动态实验，让不同方向的创作能够集中呈现。' },
+        { label: '展示目标', value: '保留静态图形和动态模型各自的观看方式，同时延续作品集统一的浏览体验。' },
+        { label: '创作内容', value: '包含 Logo 视觉设计，以及 6 段竖版可视化模型动态作品。' },
+        { label: '展示流程', value: '静态作品提供原图查看，动态作品使用视频海报预览并支持在灯箱中播放。' },
+        { label: '产出结果', value: '形成独立的“其他”案例板块，后续同类型素材也可以继续追加到这一分类。' },
+      ],
+      details: [
+        'Logo 设计以竖版长图呈现，点击后可以查看完整细节。',
+        '可视化模型作品保留原始竖版比例，并提供独立的视频播放与切换体验。',
+        '所有素材统一使用网页稳定文件名和轻量预览图，兼顾加载速度与浏览器兼容性。',
+      ],
+      images: otherMedia,
     },
   },
 ];

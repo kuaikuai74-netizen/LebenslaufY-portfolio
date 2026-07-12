@@ -1,17 +1,62 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import SectionHeader from './SectionHeader';
 import { serviceProfiles, services, servicesSection } from '../data/portfolio';
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function getFocusableElements(container) {
+  return [...container.querySelectorAll(FOCUSABLE_SELECTOR)].filter(
+    (element) => element.getClientRects().length > 0 && !element.closest('[inert]'),
+  );
+}
+
 function ServiceProfileOverlay({ profile, onClose }) {
+  const overlayRef = useRef(null);
+  const closeButtonRef = useRef(null);
+
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
+    const appRoot = document.getElementById('root');
+    const originalRootInert = appRoot?.hasAttribute('inert') ?? false;
+    const originalRootAriaHidden = appRoot?.getAttribute('aria-hidden');
+    const previouslyFocusedElement = document.activeElement;
     document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+
+    if (appRoot) {
+      appRoot.setAttribute('inert', '');
+      appRoot.setAttribute('aria-hidden', 'true');
+    }
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
         event.preventDefault();
         onClose();
+      }
+
+      if (event.key === 'Tab') {
+        const focusableElements = overlayRef.current
+          ? getFocusableElements(overlayRef.current)
+          : [];
+
+        if (focusableElements.length === 0) {
+          event.preventDefault();
+          overlayRef.current?.focus();
+          return;
+        }
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
       }
     };
 
@@ -20,18 +65,36 @@ function ServiceProfileOverlay({ profile, onClose }) {
     return () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleKeyDown);
+
+      if (appRoot) {
+        if (originalRootInert) {
+          appRoot.setAttribute('inert', '');
+        } else {
+          appRoot.removeAttribute('inert');
+        }
+        if (originalRootAriaHidden === null) {
+          appRoot.removeAttribute('aria-hidden');
+        } else {
+          appRoot.setAttribute('aria-hidden', originalRootAriaHidden);
+        }
+      }
+
+      previouslyFocusedElement?.focus?.();
     };
   }, [onClose]);
 
   return (
     <div
+      ref={overlayRef}
       className="fixed inset-0 z-[90] overflow-y-auto bg-ink/58 px-4 py-6 backdrop-blur-md sm:px-6 sm:py-10"
       role="dialog"
       aria-modal="true"
       aria-labelledby="resume-title"
+      tabIndex={-1}
     >
       <div className="relative mx-auto grid max-h-[calc(100vh-3rem)] max-w-5xl overflow-hidden rounded-[1.25rem] border border-white/50 bg-paper shadow-[0_40px_120px_rgba(0,0,0,0.26)] sm:max-h-[calc(100vh-5rem)] sm:rounded-[2rem] lg:h-[calc(100vh-5rem)] lg:min-h-0 lg:grid-cols-[0.34fr_0.66fr]">
         <button
+          ref={closeButtonRef}
           className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full border border-line bg-white/90 text-2xl font-light text-ink shadow-card transition hover:bg-ink hover:text-white sm:right-6 sm:top-6"
           type="button"
           onClick={onClose}

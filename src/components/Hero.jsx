@@ -30,17 +30,17 @@ export default function Hero() {
           <div className="hero-interaction-field" aria-hidden="true">
             <div className="hero-interaction-cubes">
               <Cubes
-                gridSize={7}
-                maxAngle={32}
-                radius={2.6}
+                gridSize={8}
+                maxAngle={30}
+                radius={2.8}
                 cellGap={5}
                 borderStyle="1px solid rgba(31, 41, 40, 0.12)"
-                faceColor="#f0f3ed"
+                faceColor="#f1f4ee"
                 rippleColor="#6f7a70"
-                rippleSpeed={1.7}
-                shadow="0 12px 28px rgba(31, 41, 40, 0.06)"
+                rippleSpeed={1.8}
+                shadow={false}
                 autoAnimate
-                rippleOnClick
+                rippleOnClick={false}
               />
             </div>
             <div className="hero-interaction-wave" />

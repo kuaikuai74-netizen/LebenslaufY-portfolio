@@ -16,6 +16,11 @@ const brandImageFiles = [
     previewFileName: 'previews/kafier-brand-system-preview.png',
     alt: 'Kafier 户外品牌视觉系统长图',
   },
+  {
+    fileName: 'chuanyi-brand-system.jpg',
+    previewFileName: 'chuanyi-brand-system-preview.jpg',
+    alt: '串意烧烤品牌视觉系统长图',
+  },
   ...Array.from({ length: 12 }, (_, index) => {
     const number = String(index + 1).padStart(2, '0');
 
