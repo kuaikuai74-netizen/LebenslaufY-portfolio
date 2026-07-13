@@ -306,6 +306,9 @@ export const productMainImages = productMainGroups.flatMap((group) =>
     src: r2AssetPath(`${r2Group.directory}/${r2Group.files[index]}`),
     displaySrc: assetPath(`portfolio/product-main-preview/${fileName.replace(/\.(jpg|png)$/i, '.jpg')}`),
     previewSrc: assetPath(`portfolio/product-main-preview/${fileName.replace(/\.(jpg|png)$/i, '.jpg')}`),
+    thumbnailSrc: r2AssetPath(
+      `thumbnails/product-main/${fileName.replace(/\.(jpg|png)$/i, '.jpg')}`,
+    ),
     alt: group.category,
     aspect: 'square',
     };

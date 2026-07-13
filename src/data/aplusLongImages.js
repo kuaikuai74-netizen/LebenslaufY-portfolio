@@ -23,7 +23,7 @@ export const aplusLongImages = aplusLongImageFiles.map((fileName, index) => ({
   src: r2AssetPath(`2、A+长图/${index + 1}.png`),
   displaySrc: assetPath(`portfolio/aplus-long-display/${fileName.replace('.png', '.jpg')}`),
   previewSrc: assetPath(`portfolio/aplus-long-preview/${fileName.replace('.png', '.jpg')}`),
-  thumbnailSrc: assetPath(`portfolio/aplus-long-preview/${fileName.replace('.png', '.jpg')}`),
+  thumbnailSrc: r2AssetPath(`thumbnails/aplus-long/${fileName.replace('.png', '.jpg')}`),
   alt: `A+ 详情页长图 ${index + 1}`,
   aspect: 'tall',
 }));
