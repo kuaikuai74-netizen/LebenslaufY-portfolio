@@ -34,6 +34,9 @@ const brandImageFiles = [
 
 export const brandImages = brandImageFiles.map((image) => ({
   src: assetPath(`portfolio/brand-campaign/${image.fileName}`),
+  displaySrc: assetPath(
+    `portfolio/brand-campaign/display/${image.fileName.replace(/\.(png|jpg)$/i, '.jpg')}`,
+  ),
   previewSrc: assetPath(`portfolio/brand-campaign/light-previews/${image.previewFileName.split('/').pop().replace('.png', '.jpg')}`),
   alt: image.alt,
   aspect: 'long',

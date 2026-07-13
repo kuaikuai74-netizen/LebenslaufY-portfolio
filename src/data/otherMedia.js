@@ -21,6 +21,7 @@ export const otherMedia = [
 
     return {
       src: assetPath(`portfolio/other/visual-model-${number}.mp4`),
+      displaySrc: assetPath(`portfolio/other-display/visual-model-${number}.mp4`),
       previewSrc: assetPath(`portfolio/other-posters/visual-model-${number}.jpg`),
       alt: `可视化模型 ${index + 1}`,
       aspect: 'tall',

@@ -11,7 +11,7 @@ const motionMediaFiles = [
   },
   {
     fileName: 'motion-media-02.gif',
-    type: 'image',
+    type: 'animation',
   },
   {
     fileName: 'motion-media-09.mp4',
@@ -27,7 +27,7 @@ const motionMediaFiles = [
   },
   {
     fileName: 'motion-media-01.gif',
-    type: 'image',
+    type: 'animation',
   },
   {
     fileName: 'motion-media-07.mp4',
@@ -41,8 +41,11 @@ const motionMediaFiles = [
 
 export const motionMedia = motionMediaFiles.map((item, index) => ({
   src: assetPath(`portfolio/motion-media/${item.fileName}`),
+  displaySrc: assetPath(
+    `portfolio/motion-media-display/${item.fileName.replace(/\.(gif|mp4)$/i, '.mp4')}`,
+  ),
   previewSrc: assetPath(`portfolio/motion-media-posters/${item.fileName.replace(/\.(gif|mp4)$/i, '.jpg')}`),
   alt: `AI 视频与动态视觉 ${index + 1}`,
   aspect: 'wide',
-  ...(item.type === 'video' ? { type: 'video' } : {}),
+  ...(item.type ? { type: item.type } : {}),
 }));

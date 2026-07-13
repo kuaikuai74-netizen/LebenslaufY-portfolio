@@ -79,18 +79,23 @@ function StableLightboxMedia({ image, mediaSrc }) {
   }
 
   const isVideo = image.type === 'video';
+  const isAnimation = image.type === 'animation';
+  const isVideoMedia = isVideo || isAnimation;
 
   return (
     <div className="relative flex min-h-full justify-center">
-      {isVideo ? (
+      {isVideoMedia ? (
         <video
           key={image.src}
           aria-label={image.alt}
           className={getLightboxMediaClassName(image.aspect, true)}
-          controls
+          autoPlay={isAnimation}
+          controls={isVideo}
+          loop={isAnimation}
+          muted={isAnimation}
           playsInline
           poster={getThumbnailSrc(image)}
-          preload="metadata"
+          preload={isAnimation ? 'auto' : 'none'}
           src={mediaSrc}
         />
       ) : (
@@ -167,7 +172,7 @@ function getCasePreviewClassName(image, displayMode) {
     return 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]';
   }
 
-  if (displayMode === 'compact-preview' && image.type === 'video') {
+  if (displayMode === 'compact-preview') {
     return 'aspect-[2.35/1] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]';
   }
 
@@ -178,7 +183,7 @@ function getLightboxMediaClassName(aspect, isVideo = false) {
   const baseClassName = 'bg-white object-contain';
 
   if (isVideo) {
-    return `${baseClassName} max-h-[calc(92vh-4rem)] w-auto max-w-full sm:max-h-[calc(92vh-5rem)] md:max-w-[31.25rem]`;
+    return `${baseClassName} h-auto w-full max-h-[calc(92vh-4rem)] sm:max-h-[calc(92vh-5rem)]`;
   }
 
   if (aspect === 'long') {
@@ -197,7 +202,7 @@ function getThumbnailSrc(image) {
 }
 
 function getLightboxSrc(image) {
-  return image.src;
+  return image.displaySrc ?? image.src;
 }
 
 function getDisplayTitle(title) {
@@ -602,6 +607,15 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                   </strong>
                 </div>
               </div>
+              <a
+                className="mt-5 inline-flex w-fit items-center gap-2 border border-line bg-paper/70 px-4 py-3 text-xs font-semibold text-ink transition hover:border-ink hover:bg-ink hover:text-white"
+                href={lightboxImage.src}
+                rel="noreferrer"
+                target="_blank"
+              >
+                查看原文件
+                <span aria-hidden="true">↗</span>
+              </a>
               <div className="mt-auto border-t border-line pt-6 text-xs font-semibold uppercase tracking-[0.28em] text-sage">
                 Full image viewer
               </div>
