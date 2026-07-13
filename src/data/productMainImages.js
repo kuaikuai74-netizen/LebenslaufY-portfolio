@@ -1,4 +1,5 @@
 import { assetPath } from './assetPath.js';
+import { r2AssetPath } from './r2AssetPath.js';
 
 const productMainGroups = [
   {
@@ -226,12 +227,87 @@ const productMainGroups = [
   },
 ];
 
+const r2ProductMainSources = {
+  '沙发/03-沙发主图': {
+    directory: '1、主图/1沙发/03-沙发主图',
+    files: ['主图1.jpg', '主图2.jpg', '主图3.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg', '主图7.jpg'],
+  },
+  '沙发/05-沙发主图': {
+    directory: '1、主图/1沙发/05-沙发主图',
+    files: ['主图1.jpg', '主图2.jpg', '主图3.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg', '主图7.jpg', '主图8.jpg'],
+  },
+  '梳妆台/01-梳妆台主图': {
+    directory: '1、主图/2梳妆台/01-梳妆台主图',
+    files: ['主图1.jpg', '主图2.jpg', '主图3.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg', '主图7.jpg'],
+  },
+  '梳妆台/02-梳妆台主图': {
+    directory: '1、主图/2梳妆台/02-梳妆台主图',
+    files: ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'],
+  },
+  '梳妆台/09-梳妆台主图A+': {
+    directory: '1、主图/2梳妆台/09-梳妆台主图A+',
+    files: ['主图2-2.jpg', '主图3-2.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg', '主图7-2.jpg', '主图8.jpg'],
+  },
+  '升降桌/1': {
+    directory: '1、主图/3升降桌/1',
+    files: ['主图2 拷贝.jpg', '主图3 拷贝.jpg', '主图4 拷贝.jpg', '主图5 拷贝.jpg', '主图6 拷贝.jpg', '主图7 拷贝.jpg', '主图8 拷贝.jpg'],
+  },
+  '电竞椅/1': {
+    directory: '1、主图/4电竞椅/1',
+    files: ['主图1.jpg', '主图3.jpg', '主图 (4).jpg', '主图 (5).jpg', '主图 (6).jpg', '主图 (7).jpg', '主图 (8).jpg', '主图 (9).jpg', '主图 (10).jpg', '主图7.png', '主图8.png'],
+  },
+  '电竞椅/2': {
+    directory: '1、主图/4电竞椅/2',
+    files: ['主图1.png', '主图2.png', '主图3_.png', '主图4.png', '主图5.png', '主图6.png', '主图7.png', '主图8.png', '主图9.png'],
+  },
+  '电竞椅/3': {
+    directory: '1、主图/4电竞椅/3',
+    files: ['主图2.png', '主图3.png', '主图4-3.png', '主图5-3.png', '主图6-3.png', '主图7-5.png'],
+  },
+  '电竞椅/4': {
+    directory: '1、主图/4电竞椅/4',
+    files: ['主图2.jpg', '主图3.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg', '主图7.jpg', '主图8.jpg'],
+  },
+  '凉亭/06-凉亭主图': {
+    directory: '1、主图/5凉亭/06-凉亭主图',
+    files: ['主图1.jpg', '主图2.jpg', '主图3.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg', '主图7.jpg'],
+  },
+  '凉亭/16-凉亭主图A+': {
+    directory: '1、主图/5凉亭/16-凉亭主图A+',
+    files: ['主图1.jpg', '主图2.jpg', '主图3.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg', '主图7.jpg'],
+  },
+  '凉亭/17-凉亭主图A+': {
+    directory: '1、主图/5凉亭/17-凉亭主图A+',
+    files: ['主图1-1.png', '主图2.png', '主图3.png', '主图4.png', '主图5.png', '主图6.png', '主图7.png'],
+  },
+  '露营车/15-露营车主图A+': {
+    directory: '1、主图/6露营车/15-露营车主图A+',
+    files: ['主图2.png', '主图3.png', '主图4.png', '主图5.png', '主图6.png', '主图7.png'],
+  },
+  '蹦床/19-蹦床主图A+': {
+    directory: '1、主图/7蹦床/19-蹦床主图A+',
+    files: ['主图2-10.png', '主图3.png', '主图4.png', '主图5.png', '主图6.png', '主图7.png'],
+  },
+  '户外桌椅/1': {
+    directory: '1、主图/8户外桌椅/1',
+    files: ['主题.jpg', '主图3.jpg', '主图4.jpg', '主图5.jpg', '主图6.jpg'],
+  },
+  '健身单车/20-健身单车主图A+': {
+    directory: '1、主图/9健身单车/20-健身单车主图A+',
+    files: ['20260706-210540.png', '主图2.png', '主图4.png', '主图5.png', '主图6.png', '主图7.png', '主图8.png'],
+  },
+};
+
 export const productMainImages = productMainGroups.flatMap((group) =>
-  group.files.map((fileName) => ({
-    src: assetPath(`portfolio/product-main/${fileName}`),
+  group.files.map((fileName, index) => {
+    const r2Group = r2ProductMainSources[`${group.category}/${group.project}`];
+
+    return {
+    src: r2AssetPath(`${r2Group.directory}/${r2Group.files[index]}`),
     displaySrc: assetPath(`portfolio/product-main-preview/${fileName.replace(/\.(jpg|png)$/i, '.jpg')}`),
     previewSrc: assetPath(`portfolio/product-main-preview/${fileName.replace(/\.(jpg|png)$/i, '.jpg')}`),
     alt: group.category,
     aspect: 'square',
-  })),
+    };
+  }),
 );

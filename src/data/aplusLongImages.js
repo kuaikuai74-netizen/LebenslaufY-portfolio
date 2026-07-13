@@ -1,4 +1,5 @@
 import { assetPath } from './assetPath.js';
+import { r2AssetPath } from './r2AssetPath.js';
 
 const aplusLongImageFiles = [
   "aplus-long-01.png",
@@ -19,7 +20,7 @@ const aplusLongImageFiles = [
 ];
 
 export const aplusLongImages = aplusLongImageFiles.map((fileName, index) => ({
-  src: assetPath(`portfolio/aplus-long/${fileName}`),
+  src: r2AssetPath(`2、A+长图/${index + 1}.png`),
   displaySrc: assetPath(`portfolio/aplus-long-display/${fileName.replace('.png', '.jpg')}`),
   previewSrc: assetPath(`portfolio/aplus-long-preview/${fileName.replace('.png', '.jpg')}`),
   thumbnailSrc: assetPath(`portfolio/aplus-long-preview/${fileName.replace('.png', '.jpg')}`),
