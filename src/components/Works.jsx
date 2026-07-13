@@ -74,77 +74,34 @@ function ProgressiveImage({ alt, className, previewSrc, src, ...props }) {
 }
 
 function StableLightboxMedia({ image, mediaSrc }) {
-  const [displayedImage, setDisplayedImage] = useState(image);
-  const [displayedMediaSrc, setDisplayedMediaSrc] = useState(mediaSrc);
-  const [pendingImage, setPendingImage] = useState(null);
-  const pendingMediaSrc = pendingImage ? getLightboxSrc(pendingImage) : undefined;
-  const displayedIsVideo = displayedImage?.type === 'video';
-  const pendingIsVideo = pendingImage?.type === 'video';
-
-  useEffect(() => {
-    if (!image || image.src === displayedImage?.src) {
-      return;
-    }
-
-    setPendingImage(image);
-  }, [displayedImage?.src, image, mediaSrc]);
-
-  if (!displayedImage) {
+  if (!image) {
     return null;
   }
 
-  const confirmPendingImage = () => {
-    if (!pendingImage || !pendingMediaSrc) {
-      return;
-    }
-
-    setDisplayedImage(pendingImage);
-    setDisplayedMediaSrc(pendingMediaSrc);
-    setPendingImage(null);
-  };
+  const isVideo = image.type === 'video';
 
   return (
     <div className="relative flex min-h-full justify-center">
-      {displayedIsVideo ? (
+      {isVideo ? (
         <video
-          aria-label={displayedImage.alt}
-          className={getLightboxMediaClassName(displayedImage.aspect, true)}
+          key={image.src}
+          aria-label={image.alt}
+          className={getLightboxMediaClassName(image.aspect, true)}
           controls
           playsInline
-          poster={getThumbnailSrc(displayedImage)}
+          poster={getThumbnailSrc(image)}
           preload="metadata"
-          src={displayedMediaSrc}
+          src={mediaSrc}
         />
       ) : (
         <ProgressiveImage
-          alt={displayedImage.alt}
-          className={getLightboxMediaClassName(displayedImage.aspect)}
+          key={image.src}
+          alt={image.alt}
+          className={getLightboxMediaClassName(image.aspect)}
           decoding="async"
           loading="eager"
-          previewSrc={getThumbnailSrc(displayedImage)}
-          src={displayedMediaSrc}
-        />
-      )}
-      {pendingImage && !pendingIsVideo && (
-        <img
-          alt=""
-          className="pointer-events-none absolute h-px w-px opacity-0"
-          decoding="async"
-          src={pendingMediaSrc}
-          onError={confirmPendingImage}
-          onLoad={confirmPendingImage}
-        />
-      )}
-      {pendingImage && pendingIsVideo && (
-        <video
-          aria-hidden="true"
-          className="pointer-events-none absolute h-px w-px opacity-0"
-          muted
-          poster={getThumbnailSrc(pendingImage)}
-          preload="metadata"
-          src={pendingMediaSrc}
-          onError={confirmPendingImage}
-          onLoadedMetadata={confirmPendingImage}
+          previewSrc={getThumbnailSrc(image)}
+          src={mediaSrc}
         />
       )}
     </div>
@@ -203,6 +160,18 @@ function getPreviewClassName(aspect) {
   return `w-full object-cover transition duration-500 group-hover:scale-[1.03] ${
     aspectClassNames[aspect] ?? aspectClassNames.square
   }`;
+}
+
+function getCasePreviewClassName(image, displayMode) {
+  if (displayMode === 'long-preview') {
+    return 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]';
+  }
+
+  if (displayMode === 'compact-preview' && image.type === 'video') {
+    return 'aspect-[2.35/1] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]';
+  }
+
+  return getPreviewClassName(image.aspect);
 }
 
 function getLightboxMediaClassName(aspect, isVideo = false) {
@@ -265,8 +234,6 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
   const lightboxThumbnails = getLightboxThumbnails(caseStudy.images, lightboxIndex);
   const canLoadMoreImages = visibleMediaCount < caseStudy.images.length;
   const caseNumber = String(caseStudy.caseNumber ?? 1).padStart(2, '0');
-  const isLongPreviewLayout = caseStudy.displayMode === 'long-preview';
-  const isCompactPreviewLayout = caseStudy.displayMode === 'compact-preview';
   const showPreviousImage = () => {
     setLightboxIndex((currentIndex) =>
       currentIndex === null
@@ -490,19 +457,15 @@ function CaseStudyOverlay({ caseStudy, onClose }) {
                 >
                   <ImageWithStatus
                     alt={image.alt}
-                    className={
-                      isLongPreviewLayout
-                        ? 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]'
-                        : isCompactPreviewLayout
-                          ? 'aspect-[2.35/1] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]'
-                        : getPreviewClassName(image.aspect)
-                    }
+                    className={getCasePreviewClassName(image, caseStudy.displayMode)}
                     decoding="async"
                     fetchpriority={index < 6 ? 'high' : 'auto'}
                     loading={index < 6 ? 'eager' : 'lazy'}
                     src={getThumbnailSrc(image)}
                     style={
-                      isCompactPreviewLayout && image.thumbnailPosition
+                      caseStudy.displayMode === 'compact-preview' &&
+                      image.type === 'video' &&
+                      image.thumbnailPosition
                         ? { objectPosition: image.thumbnailPosition }
                         : undefined
                     }
