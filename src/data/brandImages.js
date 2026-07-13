@@ -1,43 +1,36 @@
-import { assetPath } from './assetPath.js';
+import { r2AssetPath } from './r2AssetPath.js';
 
 const brandImageFiles = [
   {
-    fileName: 'five-secs-brand-system.png',
-    previewFileName: 'previews/five-secs-brand-system-preview.png',
+    fileName: '未标题-1-02.jpg',
     alt: 'FIVE SECS 运动服饰品牌视觉系统长图',
   },
   {
-    fileName: 'miaoyin-brand-system.png',
-    previewFileName: 'previews/miaoyin-brand-system-preview.png',
+    fileName: '未标题-1-03.jpg',
     alt: 'MIAOYIN 宠物营养品牌视觉系统长图',
   },
   {
-    fileName: 'kafier-brand-system.png',
-    previewFileName: 'previews/kafier-brand-system-preview.png',
+    fileName: '未标题-1-01.jpg',
     alt: 'Kafier 户外品牌视觉系统长图',
   },
   {
-    fileName: 'chuanyi-brand-system.jpg',
-    previewFileName: 'chuanyi-brand-system-preview.jpg',
+    fileName: '未标题-1-04.jpg',
     alt: '串意烧烤品牌视觉系统长图',
   },
   ...Array.from({ length: 12 }, (_, index) => {
-    const number = String(index + 1).padStart(2, '0');
+    const group = index < 6 ? '1' : '2';
+    const groupIndex = (index % 6) + 1;
 
     return {
-      fileName: `brand-material-${number}.png`,
-      previewFileName: `previews/brand-material-${number}-preview.png`,
+      fileName: `${group} (${groupIndex}).png`,
       alt: `品牌传播物料 ${index + 1}`,
     };
   }),
 ];
 
 export const brandImages = brandImageFiles.map((image) => ({
-  src: assetPath(`portfolio/brand-campaign/${image.fileName}`),
-  displaySrc: assetPath(
-    `portfolio/brand-campaign/display/${image.fileName.replace(/\.(png|jpg)$/i, '.jpg')}`,
-  ),
-  previewSrc: assetPath(`portfolio/brand-campaign/light-previews/${image.previewFileName.split('/').pop().replace('.png', '.jpg')}`),
+  src: r2AssetPath(`品牌物料/${image.fileName}`),
+  thumbnailSrc: r2AssetPath(`品牌物料/${image.fileName}`),
   alt: image.alt,
   aspect: 'long',
 }));
