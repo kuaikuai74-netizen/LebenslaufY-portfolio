@@ -24,6 +24,18 @@ npm run build
 
 The production build is generated in `dist/`.
 
+## Access password
+
+The password screen uses a salted PBKDF2 hash rather than storing the plain password in source code. GitHub Pages is a static host, so this is a privacy deterrent—not server-side access control. Anyone with access to the published JavaScript can still attempt to bypass or crack it.
+
+To rotate the password, generate replacement public configuration values:
+
+```bash
+npm run access:config -- "your-new-password"
+```
+
+Add the three generated values as GitHub repository Actions variables named `PORTFOLIO_ACCESS_ITERATIONS`, `PORTFOLIO_ACCESS_SALT`, and `PORTFOLIO_ACCESS_HASH`. The deployment workflow reads them during the next build. If these variables are unset, the checked-in fallback keeps the current password working.
+
 ## Project Structure
 
 - `src/App.jsx`: Main page composition and lock-screen gate.
@@ -38,7 +50,7 @@ The production build is generated in `dist/`.
 - Password-gated portfolio entry screen.
 - Hero section with interactive visual elements.
 - About, works, resume/services, skills, and contact sections.
-- Four selected work categories with full-screen case-study overlays.
+- Five selected work categories with full-screen case-study overlays.
 - Image and video preview lightbox with thumbnails, keyboard navigation, and mobile layout support.
 - Basic SEO, favicon, Open Graph metadata, and GitHub Pages base-path support.
 

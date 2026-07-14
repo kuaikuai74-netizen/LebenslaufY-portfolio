@@ -156,8 +156,10 @@ function WorkCover({ work, index }) {
 
 function getPreviewClassName(aspect) {
   const aspectClassNames = {
+    landscape: 'aspect-video',
     long: 'aspect-[9/16]',
     tall: 'aspect-[3/4]',
+    standard: 'aspect-[4/3]',
     wide: 'aspect-[2.44/1]',
     square: 'aspect-square',
   };
@@ -168,15 +170,15 @@ function getPreviewClassName(aspect) {
 }
 
 function getCasePreviewClassName(image, displayMode) {
-  if (displayMode === 'long-preview') {
+  if (displayMode === 'long-preview' && !image.previewAspect) {
     return 'aspect-[3/4] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]';
   }
 
-  if (displayMode === 'compact-preview') {
+  if (displayMode === 'compact-preview' && !image.previewAspect) {
     return 'aspect-[2.35/1] w-full bg-white object-cover object-top transition duration-500 group-hover:scale-[1.03]';
   }
 
-  return getPreviewClassName(image.aspect);
+  return getPreviewClassName(image.previewAspect ?? image.aspect);
 }
 
 function getLightboxMediaClassName(aspect, isVideo = false) {

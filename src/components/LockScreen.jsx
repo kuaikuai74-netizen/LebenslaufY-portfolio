@@ -1,29 +1,44 @@
 import { useEffect, useRef, useState } from 'react';
 import Cubes from './Cubes';
-
-const ACCESS_PASSWORD = '123456';
+import { verifyPortfolioPassword } from '../security/portfolioAccess';
 
 export default function LockScreen({ onUnlock }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isExiting, setIsExiting] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const unlockTimerRef = useRef(null);
 
   useEffect(() => {
     return () => window.clearTimeout(unlockTimerRef.current);
   }, []);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (password === ACCESS_PASSWORD) {
-      setError('');
-      setIsExiting(true);
-      unlockTimerRef.current = window.setTimeout(onUnlock, 620);
+    if (isVerifying) {
       return;
     }
 
-    setError('密码不正确，请重新输入');
+    setIsVerifying(true);
+    setError('');
+
+    try {
+      const isValid = await verifyPortfolioPassword(password);
+
+      if (!isValid) {
+        setError('密码不正确，请重新输入');
+        return;
+      }
+
+      setError('');
+      setIsExiting(true);
+      unlockTimerRef.current = window.setTimeout(onUnlock, 620);
+    } catch {
+      setError('当前浏览器无法完成安全校验，请更新浏览器后重试');
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   return (
@@ -61,7 +76,7 @@ export default function LockScreen({ onUnlock }) {
               id="portfolio-password"
               type="password"
               value={password}
-              disabled={isExiting}
+              disabled={isExiting || isVerifying}
               onChange={(event) => {
                 setPassword(event.target.value);
                 setError('');
@@ -69,11 +84,11 @@ export default function LockScreen({ onUnlock }) {
               placeholder="请输入密码"
               autoComplete="current-password"
             />
-            <button type="submit" disabled={isExiting}>
-              {isExiting ? '进入中' : '进入作品集'}
+            <button type="submit" disabled={isExiting || isVerifying}>
+              {isExiting ? '进入中' : isVerifying ? '验证中' : '进入作品集'}
             </button>
           </div>
-          {error ? <p className="lock-form__error">{error}</p> : null}
+          {error ? <p className="lock-form__error" role="alert">{error}</p> : null}
         </form>
       </section>
     </main>

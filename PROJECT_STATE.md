@@ -11,8 +11,8 @@
 - 首屏英文标语为一行展示：`Every project tells a story. Every detail has a purpose. Every interaction matters.`
 - “关于我”板块已增强排版，不再只有大面积空白；左侧为个人姓名、三行英文短句和标签，右侧为能力叙述与三条编号要点。
 - “关于我”底部统计数据已按反馈删除。
-- “作品”板块有 4 个案例：产品主图视觉、A+ 详情页视觉系统、AI 视频与动态视觉、品牌传播物料。
-- 4 个作品首图已改为线稿风格 SVG，去掉影响阅读性的覆盖文字标签。
+- “作品”板块有 5 个案例：产品主图视觉、A+ 详情页视觉系统、AI 视频与动态视觉、品牌传播物料、其他。
+- 5 个作品首图均使用线稿风格 SVG，去掉影响阅读性的覆盖文字标签。
 - 点击作品卡片可打开案例详情弹层；点击详情图片/视频可打开大图灯箱，支持缩略图、上一张/下一张、关闭。
 - 已修复移动端灯箱定位问题：灯箱通过 React portal 渲染到 `document.body`，避免受案例弹层滚动容器和 `backdrop-filter` 影响导致 fixed 图层偏移。
 - “能力模块”已改为横向可滑动模块，卡片 hover 时有深色品牌感交互动效。
@@ -56,20 +56,12 @@
 
 静态资源：
 
-- `public/portfolio/profile-photo.png`
-- `public/portfolio/reference-motion.mp4`
-- `public/portfolio/ai-sofa-workflow.png`
-- `public/portfolio/sofa-main.jpg`
-- `public/portfolio/dresser-aplus.jpg`
-- `public/portfolio/gaming-chair-aplus.png`
-- `public/portfolio/workbench-aplus.png`
-- `public/portfolio/dresser-main/main-01.jpg` 至 `main-08.jpg`
-- `public/portfolio/dresser-main/detail-01.jpg` 至 `detail-09.jpg`
 - `public/portfolio/covers/product-main-visual.svg`
 - `public/portfolio/covers/aplus-visual-system.svg`
 - `public/portfolio/covers/ai-video-motion.svg`
 - `public/portfolio/covers/brand-campaign.svg`
 - `public/favicon.svg`
+- 产品主图、A+ 长图和品牌传播物料的原图/缩略图由 R2 公共存储提供；本地仅保留页面仍在使用的预览图和视频素材。
 
 项目配置：
 
@@ -89,19 +81,20 @@
 
 # 当前存在的问题
 
-- 当前 git 状态仍有大量未跟踪项目文件，因为当前仓库此前没有纳入这些源码；但 `.gitignore` 已生效，`node_modules/` 和 `dist/` 已显示为 ignored。
+- 已清理由 R2 替代或未被页面引用的历史静态资源，`public/` 从约 796 MB 降至约 238 MB。
 - 安装 `ogl` 后，`npm` 曾提示存在 2 个安全漏洞；本轮尝试 `npm audit --audit-level=moderate`，沙箱内因无法解析 npm registry 失败，联网审计请求又被权限审查拒绝，因为会向外部 npm registry 发送依赖元数据。后续需要用户明确授权后再评估。
 - 还没有自动化测试。
-- 移动端已完成 390×844 视口下的核心交互专项检查：首屏无页面级横向溢出，4 个案例详情和灯箱均可打开，灯箱关闭/上一张/下一张按钮均在视口内。后续仍建议用真实手机做最终视觉 QA。
+- 移动端已完成 390×844 视口下的核心交互专项检查：首屏无页面级横向溢出，案例详情和灯箱按钮均在视口内。后续仍建议用真实手机做最终视觉 QA。
 - 案例详情文案仍偏模板化，需要替换成真实项目背景、职责、工具、产出和结果。
-- 当前 `CONTENT.md` / `SESSION.md` 不会自动同步到网站，网站实际读取的是 `src/data/portfolio.js`。
+- 当前 `CONTENT.md` 不会自动同步到网站，网站实际读取的是 `src/data/portfolio.js`。
+- 访问屏幕已从明文口令改为加盐 PBKDF2 校验；GitHub Pages 是静态托管，无法提供真正的服务端鉴权。
 - `Prism` 使用 WebGL，低性能设备上需要继续观察首屏性能。
 - 浏览器里如果出现 `127.0.0.1 拒绝连接`，通常是 Vite dev server 已停止，需要重新启动。
 
 # TODO
 
 - 确认哪些文件应该纳入版本控制并提交；`.gitignore` 已补充，`node_modules/`、`dist/`、临时目录已排除。
-- 替换 4 个作品案例的真实项目文案与图片/视频素材。
+- 替换 5 个作品案例的真实项目文案与图片/视频素材。
 - 用真实手机做最终视觉 QA：首屏、作品网格、案例详情、灯箱、能力横滑。
 - 给作品详情增加更明确的项目结构，例如背景、目标、职责、流程、结果。
 - 根据最终投递场景继续完善 SEO 信息；基础页面标题、favicon 和 Open Graph 信息已补充。
@@ -165,7 +158,7 @@ npm run build
 - 页面能正常打开，控制台无明显运行错误。
 - 首屏 `Prism` 动效存在，但不影响文字阅读。
 - “关于我”板块统计数据已删除。
-- 4 个作品首图都能加载，文字清晰，无多余覆盖标签。
+- 5 个作品首图都能加载，文字清晰，无多余覆盖标签。
 - 点击每个作品卡片能打开案例详情。
 - 案例详情中的图片/视频能打开灯箱，上一张、下一张、关闭可用。
 - 能力模块在一行内横向滑动，hover 有深色品牌交互动效。
@@ -175,10 +168,10 @@ npm run build
 
 - `npm install` 成功。
 - `npm run build` 成功，构建产物生成到 `dist/`。
-- 浏览器桌面检查通过：页面标题正常、首屏 H1 正常、4 个作品卡片存在、“关于我”导航锚点为 `#about`、无横向溢出、控制台无错误。
+- 浏览器桌面检查通过：页面标题正常、首屏 H1 正常、5 个作品卡片存在、“关于我”导航锚点为 `#about`、无横向溢出、控制台无错误。
 - 导航交互检查通过：顶部默认高亮“概况”，滚动到关于我后高亮切换为“关于我”，进入 `#works` 时高亮“作品”，点击“作品”后高亮会锁定在“作品”并避免滚动途中闪到“关于我”，滚动进度条随页面滚动变化。
 - 作品详情交互检查通过：点击作品卡片可打开案例详情，点击图片可打开灯箱，灯箱上一张/下一张/关闭按钮存在，灯箱和案例详情都可关闭。
-- 移动端专项检查通过：在 390×844 视口下，4 个作品案例灯箱均完整覆盖视口，无横向溢出，关闭/上一张/下一张按钮都在可点击范围内，控制台无错误。
+- 移动端专项检查通过：在 390×844 视口下，案例灯箱均完整覆盖视口，无横向溢出，关闭/上一张/下一张按钮都在可点击范围内，控制台无错误。
 - 首屏工具 logo 动效验证通过：桌面 1280×800 与移动 390×844 视口均显示工具卡片，无横向溢出，控制台无错误。
 - 首屏 `Prism` WebGL canvas 存在且尺寸正常，截图可见动态背景区域，控制台无 WebGL 相关错误。
 - `.gitignore` 生效：`node_modules/` 和 `dist/` 当前为 ignored。

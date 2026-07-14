@@ -38,6 +38,9 @@ jobs:
         run: npm run build
         env:
           GITHUB_PAGES: true
+          VITE_PORTFOLIO_ACCESS_ITERATIONS: ${{ vars.PORTFOLIO_ACCESS_ITERATIONS }}
+          VITE_PORTFOLIO_ACCESS_SALT: ${{ vars.PORTFOLIO_ACCESS_SALT }}
+          VITE_PORTFOLIO_ACCESS_HASH: ${{ vars.PORTFOLIO_ACCESS_HASH }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
