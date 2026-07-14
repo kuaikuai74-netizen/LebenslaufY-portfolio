@@ -12,16 +12,6 @@ const visualModelThumbnailPositions = [
 
 const otherWorkImages = [
   {
-    fileName: '视觉优化-数据3.png',
-    alt: '视觉优化数据 3',
-    aspect: 'landscape',
-  },
-  {
-    fileName: '视觉优化-数据2.png',
-    alt: '视觉优化数据 2',
-    aspect: 'landscape',
-  },
-  {
     fileName: '1视觉工作跟紧仪表盘.png',
     alt: '视觉工作跟进仪表盘',
     aspect: 'standard',
@@ -51,6 +41,16 @@ const otherWorkImages = [
     alt: '视觉优化数据整理',
     aspect: 'landscape',
   },
+  {
+    fileName: '视觉优化-数据3.png',
+    alt: '视觉优化数据 3',
+    aspect: 'landscape',
+  },
+  {
+    fileName: '视觉优化-数据2.png',
+    alt: '视觉优化数据 2',
+    aspect: 'landscape',
+  },
 ].map((image) => ({
   ...image,
   src: r2AssetPath(`其他/${image.fileName}`),
@@ -58,18 +58,18 @@ const otherWorkImages = [
 }));
 
 const visualModelMedia = Array.from({ length: 6 }, (_, index) => {
-    const number = String(index + 1).padStart(2, '0');
+  const number = String(index + 1).padStart(2, '0');
 
-    return {
-      src: assetPath(`portfolio/other/visual-model-${number}.mp4`),
-      displaySrc: assetPath(`portfolio/other-display/visual-model-${number}.mp4`),
-      previewSrc: assetPath(`portfolio/other-posters/visual-model-${number}.jpg`),
-      alt: `可视化模型 ${index + 1}`,
-      aspect: 'tall',
-      thumbnailPosition: visualModelThumbnailPositions[index],
-      type: 'video',
-    };
-  });
+  return {
+    src: assetPath(`portfolio/other/visual-model-${number}.mp4`),
+    displaySrc: assetPath(`portfolio/other-display/visual-model-${number}.mp4`),
+    previewSrc: assetPath(`portfolio/other-posters/visual-model-${number}.jpg`),
+    alt: `可视化模型 ${index + 1}`,
+    aspect: 'tall',
+    thumbnailPosition: visualModelThumbnailPositions[index],
+    type: 'video',
+  };
+});
 
 export const otherMedia = [
   ...visualModelMedia,
