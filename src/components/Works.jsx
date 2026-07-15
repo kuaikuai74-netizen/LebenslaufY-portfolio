@@ -204,7 +204,11 @@ function getThumbnailSrc(image) {
 }
 
 function getLightboxSrc(image) {
-  return image.displaySrc ?? image.src;
+  if (image.type === 'video' || image.type === 'animation') {
+    return image.displaySrc ?? image.src;
+  }
+
+  return image.src;
 }
 
 function getDisplayTitle(title) {

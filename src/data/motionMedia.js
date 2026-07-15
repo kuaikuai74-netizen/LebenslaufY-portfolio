@@ -2,19 +2,23 @@ import { assetPath } from './assetPath.js';
 
 const motionMediaFiles = [
   {
-    fileName: 'motion-media-05.mp4',
-    type: 'video',
-  },
-  {
-    fileName: 'motion-media-03.mp4',
-    type: 'video',
+    fileName: 'motion-media-01.gif',
+    type: 'animation',
   },
   {
     fileName: 'motion-media-02.gif',
     type: 'animation',
   },
   {
-    fileName: 'motion-media-09.mp4',
+    fileName: 'motion-media-03.mp4',
+    type: 'video',
+  },
+  {
+    fileName: 'motion-media-04.mp4',
+    type: 'video',
+  },
+  {
+    fileName: 'motion-media-05.mp4',
     type: 'video',
   },
   {
@@ -22,19 +26,19 @@ const motionMediaFiles = [
     type: 'video',
   },
   {
-    fileName: 'motion-media-08.mp4',
-    type: 'video',
-  },
-  {
-    fileName: 'motion-media-01.gif',
-    type: 'animation',
-  },
-  {
     fileName: 'motion-media-07.mp4',
     type: 'video',
   },
   {
-    fileName: 'motion-media-04.mp4',
+    fileName: 'motion-media-08.mp4',
+    type: 'video',
+  },
+  {
+    fileName: 'motion-media-09.mp4',
+    type: 'video',
+  },
+  {
+    fileName: 'motion-media-10.mp4',
     type: 'video',
   },
 ];
